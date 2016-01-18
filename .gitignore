@@ -6,3 +6,6 @@ gradlew.bat
 .idea
 *~
 ~*
+*.ipr
+*.iml
+*.iws

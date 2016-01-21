@@ -8,14 +8,24 @@ This piece of software is developed by the ÖH Informatik in order to support th
 
 ## Setup
 
-In order to run this project, you need a working installation of Gradle and JDK. Once you have this software available
-simply clone the current master branch and use "gradle bootRun" in order to run the application. 
+In order to run this project, you need a working installation of Gradle and JDK. Once you have this software available you may type the following to run this project:
+```
+git clone https://github.com/Yolgie/jku-lan-se.git
+cd jku-lan-se
+gradle bootRun
+```
 
 For the most popular IDE's, Eclipse and IntelliJ Idea, there is also a gradle command available in order to make all
 dependencies loaded by gradle, available. 
 
-For Eclipse: gradle eclipse
-For IntelliJ Idea: gradle idea
+For Eclipse: 
+```
+gradle eclipse
+```
+For IntelliJ Idea: 
+```
+gradle idea
+```
 
 ## Work Convention
 

@@ -9,3 +9,7 @@ gradlew.bat
 *.ipr
 *.iml
 *.iws
+bin
+.classpath
+.project
+.settings

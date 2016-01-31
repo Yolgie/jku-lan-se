@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import javax.sql.DataSource;
 
 /**
- * Spring Security Configuraiton File.
+ * Spring Security Configuration File.
  */
 @Configuration
 @EnableWebSecurity
@@ -34,6 +34,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/**").authenticated()
 //                .and()
 //                .rememberMe();
+			        .authorizeRequests()
+			        	.antMatchers("/index.html", "/js/**", "/css/**", "/", 
+			        			"/webjars/**", "/wro/**", "/resource/**",
+			        			"/favion.ico", "/static-resources/**").permitAll()
+			        	.antMatchers("/**").authenticated()
+			        .and()
+	                .formLogin()
+	                .loginPage("/login")
+	                .loginProcessingUrl("/login/authenticate")
+	                .failureUrl("/login?error=bad_credentials")
+	                .permitAll();
+			        /*
                     .openidLogin()
                         .loginPage("/login")
                         .loginProcessingUrl("/login/j_spring_openid_security_check")
@@ -43,11 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .authenticationUserDetailsService(new CustomOpenIDAuthenticationUserDetailsService())
                         .permitAll()
                     .and()
-                    .authorizeRequests()
-                        .antMatchers("/favion.ico", "/static-resources/**").permitAll()
-                        .antMatchers("/**").authenticated()
-                    .and()
-                    .csrf().disable();
+                    .csrf().disable();*/
 
     }
 }

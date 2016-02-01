@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Main Class, used to start the Application.
+ * 
+ * https://github.com/philipsorst/angular-rest-springsecurity/tree/master/src/main/java/net/dontdrinkandroot/example/angularrestspringsecurity/rest
  */
 @SpringBootApplication
 @RestController

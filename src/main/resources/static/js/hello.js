@@ -1,19 +1,13 @@
-angular.module('hello', [])
-  .config(function($routeProvider, $httpProvider) {
+'use strict';
 
-	$routeProvider.when('/', {
-		templateUrl : 'home.html',
-		controller : 'home'
-	}).when('/login', {
-		templateUrl : 'login.html',
-		controller : 'navigation'
-	}).otherwise('/');
+var app = angular.module('webApp')
 
-    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+app.config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
+	$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+}])
 
-  })
-  .controller('home', function($scope, $http) {
-  $http.get('/resource/').success(function(data) {
-    $scope.greeting = data;
-  })
+app.controller('home', function($scope, $http) {
+	$http.get('/resource/').success(function(data) {
+		$scope.greeting = data;
+	})
 });

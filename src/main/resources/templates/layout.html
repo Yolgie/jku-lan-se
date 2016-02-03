@@ -1,0 +1,50 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:tiles="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.thymeleaf.org"
+>
+<head>
+	<title>JKU LAN</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<link th:href="@{/wro/css/angular-bootstrap.css}" rel="stylesheet"></link>
+</head>
+
+<body ng-app="webApp">
+	<header>
+	<!-- Navbar -->
+	<!--div class="navbar navbar-inverse navbar-fixed-top" layout:fragment="header">
+	    <div class="container">
+	        <div class="navbar-header">
+	            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	            </button>
+	            <a class="navbar-brand" href="#">My project</a>
+	        </div>
+	        <div class="navbar-collapse collapse">
+	            <ul class="nav navbar-nav">
+	                <li th:classappend="${page == 'home' ? 'active' : ''}"><a href="#" th:href="@{/}">Home</a></li>
+	                <li th:classappend="${page == 'messages' ? 'active' : ''}"><a href="#" th:href="@{/user}">Users</a></li>
+	            </ul>
+	            <ul class="nav navbar-nav navbar-right">
+	                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login" th:href="@{/login}">Sign in</a></li>
+	                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/saml/login" th:href="@{/saml/login}">Federated Login</a></li>
+	                <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="/logout" th:href="@{/logout}">Logout</a></li>
+	            </ul>
+	        </div>
+	    </div>
+	</div-->
+	</header>
+	<div class="container">
+		<section layout:fragment="content">
+      		<p>Page content goes here</p>
+    	</section>
+	</div>
+	<footer>	
+      <p layout:fragment="footer">Custom footer here</p>
+    </footer>
+	<script th:src="@{/wro/js/angular-bootstrap.js}" type="text/javascript"></script>
+	<script th:src="@{/js/hello.js}"></script>
+</body>
+</html>

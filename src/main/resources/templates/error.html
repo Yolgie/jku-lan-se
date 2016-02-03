@@ -1,22 +1,17 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:tiles="http://www.thymeleaf.org">
+	  xmlns:tiles="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.thymeleaf.org"
+	  layout:decorator="layout"
+	  >
 <head>
-<title>Hello AngularJS</title>
-<link href="wro/css/angular-bootstrap.css" rel="stylesheet"></link>
-<style type="text/css">
-[ng\:cloak], [ng-cloak], .ng-cloak {
-  display: none !important;
-}
-</style>
+	<title>Index Page</title>
 </head>
 
-<body ng-app="hello">
-  <div class="container">
-    <h1>Error</h1>
-    
-  </div>  
-  <script src="wro/js/angular-bootstrap.js" type="text/javascript"></script>
-  <script src="js/hello.js"></script>
-</body>
+<body>
+	<section layout:fragment="content">
+    <h1 th:text="${errorCode}">500</h1>
+    <p th:text="${errorMessage}">java.lang.NullPointerException</p>
+    </section>
+ </body>
 </html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:tiles="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.thymeleaf.org"
+	  layout:decorator="layout"
+	  >
+<head>
+	<title>IDP Selection</title>
+</head>
+
+<body>
+	<section layout:fragment="content">
+        <h1>Select your IdP:</h1>
+		<form th:action="${idpDiscoReturnURL}" method="get">
+			<div th:each="idp : ${idps}">
+				<input type="radio" th:name="${idpDiscoReturnParam}" th:id="'idp_' + ${idp}" th:value="${idp}" />
+				<label th:for="'idp_' + ${idp}" ><span th:text="${idp}">null</span></label>
+			</div>
+			<p>
+				<input type="submit" value="Login" />
+			</p>
+		</form>
+	</section>
+</body>
+</html>

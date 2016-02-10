@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.logging.Log;
@@ -13,7 +14,6 @@ import org.apache.commons.logging.LogFactory;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSString;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,25 +23,29 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
+import org.springframework.social.security.SocialUserDetails;
+import org.springframework.social.security.SocialUserDetailsService;
 
 public class ApiUserDetailsService implements UserDetailsService, AuthenticationUserDetailsService<OpenIDAuthenticationToken>,
-	SAMLUserDetailsService {
+	SAMLUserDetailsService, SocialUserDetailsService {
 	private static Log log = LogFactory.getLog(ApiUserDetailsService.class);
 	
-	@Autowired
+	@Inject
 	private PasswordEncoder encoder;
 	
     @Value("${security.saml.adminRoleRegexp}")
     @NotNull
     private String adminRegexp;
 	
-	@Autowired
+	@Inject
 	private UserDAO dao;
 
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 	    assert dao != null;
+	    log.debug("Looking up formauth user in database");
 	    User user = dao.findByName(username);
+	    log.trace("User logged in with form: "+user);
 	    if (user == null) {
 	    	throw new UsernameNotFoundException("Unable to find user: "+username);
 	    }
@@ -51,10 +55,13 @@ public class ApiUserDetailsService implements UserDetailsService, Authentication
     @Override
     public UserDetails loadUserDetails(OpenIDAuthenticationToken token) throws UsernameNotFoundException {
     	assert dao != null;
-        log.error("Hier muss entweder ein Nutzer angelegt, oder einer geladen werden");
-        throw new UsernameNotFoundException("Aktuell wird kein UserDetails Object zurückgeliefert");
+        log.debug("User "+token.getName()+" authenticated with OpenID");
+        log.trace(token);
+        
+        User user = new User();
+        return user;
     }
-    
+
     private Set<String> mapRoles(final SAMLCredential credential) {
     	final Set<String> roles = new HashSet<String>();
     	
@@ -77,7 +84,7 @@ public class ApiUserDetailsService implements UserDetailsService, Authentication
     	
     	return roles;
     }
-    
+
     private User createFromCredential(final SAMLCredential credential) {
     	final User user = new User();
     	user.setName(getAttributeValue(getAttributeByFriendlyName(credential, "cn")));
@@ -87,7 +94,47 @@ public class ApiUserDetailsService implements UserDetailsService, Authentication
     	user.setRoles(mapRoles(credential));
     	return user;
     }
+
+	public Object loadUserBySAML(final SAMLCredential credential)
+			throws UsernameNotFoundException {
+		assert dao != null;
+		// The method is supposed to identify local account of user referenced by
+		// data in the SAML assertion and return UserDetails object describing the user.
+		
+		String userID = credential.getNameID().getValue();
+		
+		log.info(userID + " authenticated with SAML");
+
+		if (log.isTraceEnabled()) {
+			log.trace("User attributes");
+			for (Attribute attr : credential.getAttributes()) {
+				log.trace(String.format("%s: %s", attr.getFriendlyName(), attributeValuesToString(attr)));
+			}
+		}
+		User user = dao.findByName(getAttributeValue( getAttributeByFriendlyName(credential, "cn") ));
+		
+		if (user == null) {
+			log.info("Provisioning user...");
+			user = createFromCredential(credential);
+			log.trace(String.format("Newly minted user: %s", user));
+			dao.save(user);
+		}
+		
+		return user;
+	}
+
+	@Override
+	public SocialUserDetails loadUserByUserId(String userId)
+			throws UsernameNotFoundException {
+		assert dao != null;
+		User user = new User();
+		log.info("User "+userId+" signed in with social");
+		return user;
+	}
     
+    /*
+     * OpenSAML helper methods
+     */
     private Attribute getAttributeByFriendlyName(final SAMLCredential credential, final String name) {
     	for (Attribute attr : credential.getAttributes()) {
     		if (name.equals(attr.getFriendlyName())) {
@@ -133,32 +180,7 @@ public class ApiUserDetailsService implements UserDetailsService, Authentication
     	}
     	return null;
     }
-    
-	public Object loadUserBySAML(final SAMLCredential credential)
-			throws UsernameNotFoundException {
-		assert dao != null;
-		// The method is supposed to identify local account of user referenced by
-		// data in the SAML assertion and return UserDetails object describing the user.
-		
-		String userID = credential.getNameID().getValue();
-		
-		log.info(userID + " is logged in");
-
-		if (log.isTraceEnabled()) {
-			log.trace("User attributes");
-			for (Attribute attr : credential.getAttributes()) {
-				log.trace(String.format("%s: %s", attr.getFriendlyName(), attributeValuesToString(attr)));
-			}
-		}
-		User user = dao.findByName(getAttributeValue( getAttributeByFriendlyName(credential, "cn") ));
-		
-		if (user == null) {
-			log.info("Provisioning user...");
-			user = createFromCredential(credential);
-			log.trace(String.format("Newly minted user: %s", user));
-			dao.save(user);
-		}
-		
-		return user;
-	}
+    /*
+     * /OpenSAML helper methods
+     */    
 }

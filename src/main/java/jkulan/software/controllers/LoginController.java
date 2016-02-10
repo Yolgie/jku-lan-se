@@ -18,10 +18,10 @@ public class LoginController {
         }
 
         @RequestMapping("/logout")
-        @PreAuthorize("isAuthenticated()")
+        @PreAuthorize("permitAll()")
         public String logout()
         {
-            return "logout";
+            return "redirect:/login?logout";
         }
 }
 

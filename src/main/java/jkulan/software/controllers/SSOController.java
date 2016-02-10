@@ -2,14 +2,12 @@ package jkulan.software.controllers;
 
 import java.util.Set;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.saml.metadata.MetadataManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,16 +21,16 @@ public class SSOController {
 	// Logger
 	private static final Log log = LogFactory.getLog(SSOController.class);
 
-	@Autowired
+	@Inject
 	private MetadataManager metadata;
 
 	@RequestMapping(value = "/idpSelection", method = RequestMethod.GET)
 	@PreAuthorize("permitAll()")
 	public String idpSelection(HttpServletRequest request, Model model) {
-		if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
-			log.warn("The current user is already logged.");
-			return "redirect:/";
-		} else {
+//		if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+//			log.warn("The current user is already logged.");
+//			return "redirect:/";
+//		} else {
 			if (isForwarded(request)) {
 				Set<String> idps = metadata.getIDPEntityNames();
 				for (String idp : idps)
@@ -43,7 +41,7 @@ public class SSOController {
 				log.warn("Direct accesses to '/idpSelection' route are not allowed");
 				return "redirect:/";
 			}
-		}
+//		}
 	}
 
 	/*

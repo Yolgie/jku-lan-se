@@ -1,0 +1,31 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:tiles="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.thymeleaf.org"
+	  >
+<head>
+	<title>Steam Connect</title>
+</head>
+
+<body>
+	<p>Steam Connect</p>
+	<form name="steam" th:action="@{/connect/steam}" id="steam" method="post">
+		<fieldset>
+			<div class="formInfo">
+				<p>You aren't connected to Steam yet. Click the button to connect this application with your Steam account.</p>
+			</div>
+			<input type="hidden" name="openid_identifier" value="http://steamcommunity.com/openid" />
+			<button type="submit" class="btn"><img th:src="@{/img/sits_large_border.png}" /></button>
+		</fieldset>
+	</form>
+	<form name="steam" th:action="@{/connect/steam}" id="steam" method="get">
+		<fieldset>
+			<div class="formInfo">
+				<p>You aren't connected to Steam yet. Click the button to connect this application with your Steam account.</p>
+			</div>
+			<input type="hidden" name="openid_identifier" value="http://steamcommunity.com/openid" />
+			<button type="submit" class="btn"><img th:src="@{/img/sits_large_border.png}" /></button>
+		</fieldset>
+	</form>
+</body>
+</html>

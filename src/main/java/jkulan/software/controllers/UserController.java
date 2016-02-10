@@ -6,15 +6,10 @@ package jkulan.software.controllers;
 
 import java.security.Principal;
 
-import javax.validation.constraints.NotNull;
-
-import jkulan.software.model.User;
-import jkulan.software.model.UserDAO;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import jkulan.software.model.User;
+import jkulan.software.model.UserDAO;
 
 /**
  * A class to test interactions with the MySQL database using the UserDao class.
@@ -38,13 +36,13 @@ public class UserController {
 	
 	private static Log log = LogFactory.getLog(UserController.class);
 	
-	@Autowired
+	@Inject
 	private UserDetailsService userService;
 
-	@Autowired
+	@Inject
 	private AuthenticationManager authManager;
 
-    @Autowired
+    @Inject
     private UserDAO userDao;
 	
     // ------------------------
@@ -112,6 +110,7 @@ public class UserController {
             userId = String.valueOf(user.getId());
         }
         catch (Exception ex) {
+        	log.error("User not found", ex);
             return "User not found";
         }
         return "The jkulan.software.model id is: " + userId;

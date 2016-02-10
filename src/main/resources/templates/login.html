@@ -28,15 +28,7 @@
 			</div>
 		</fieldset>
 	</form>
-	
-	<form name="openid" action="/login/j_spring_openid_security_check" method="post">
-		<fieldset>
-			<label for="openid_identifier">Login</label> <input
-				id="openid_identifier" name="openid_identifier" size="20"
-				maxlength="100" type="text" />
-			<button type="submit" class="btn">Log in with OpenID</button>
-		</fieldset>
-	</form>
+	<a th:href="@{/connect/steam?openid_identifier=http://steamcommunity.com/openid}"><img th:src="@{/img/sits_large_border.png}" /></a>
 </section>
 </body>
 </html>

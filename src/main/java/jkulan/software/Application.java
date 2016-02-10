@@ -4,12 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.h2.server.web.WebServlet;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.boot.autoconfigure.social.SocialWebAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @SpringBootApplication
 @RestController
+@EnableAutoConfiguration(exclude=SocialWebAutoConfiguration.class)
 public class Application {
 	
 	@RequestMapping("/resource")
@@ -28,13 +27,6 @@ public class Application {
 		model.put("id", UUID.randomUUID().toString());
 		model.put("content", "Hello World");
 		return model;
-	}
-	
-	@Bean
-	public ServletRegistrationBean h2servletRegistration() {
-	    ServletRegistrationBean registration = new ServletRegistrationBean(new WebServlet());
-	    registration.addUrlMappings("/console/*");
-	    return registration;
 	}
 	
     public static void main(String[] args) {

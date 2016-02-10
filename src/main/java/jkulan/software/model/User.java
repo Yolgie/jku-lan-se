@@ -17,13 +17,14 @@ import javax.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.social.security.SocialUserDetails;
 
 /**
  * Created by tth on 1/18/16.
  */
 @javax.persistence.Entity
 @Table(name = "users")
-public class User implements UserDetails, Entity {
+public class User implements UserDetails, Entity, SocialUserDetails {
 	// ------------------------
     // PRIVATE FIELDS
     // ------------------------
@@ -51,12 +52,12 @@ public class User implements UserDetails, Entity {
     @Column(length = 80, nullable = false)
 	private String password;
     
+    private String steamId;
+    
     // ------------------------
     // PUBLIC METHODS
     // ------------------------
-
-
-    public User(String name, Set<String> roles, String address,
+	public User(String name, Set<String> roles, String address,
 			String email, String password) {
 		super();
 		this.name = name;
@@ -160,13 +161,13 @@ public class User implements UserDetails, Entity {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities()
 	{
-		Set<String> roles = this.getRoles();
+		final Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+		final Set<String> roles = this.getRoles();
 
 		if (roles == null) {
 			return Collections.emptyList();
 		}
 
-		Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
 		for (String role : roles) {
 			authorities.add(new SimpleGrantedAuthority(role));
 		}
@@ -177,7 +178,20 @@ public class User implements UserDetails, Entity {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", roles=" + roles
-				+ ", address=" + address + ", email=" + email + ", password="
-				+ (password != null) + "]";
+				+ ", address=" + address + ", email=" + email + ", steamId="+ steamId +", password="
+				+ (password != null) + ", grantedAuthorities="+getAuthorities()+"]";
+	}
+
+	@Override
+	public String getUserId() {
+		return getSteamId();
+	}
+
+	public String getSteamId() {
+		return steamId;
+	}
+
+	public void setSteamId(String steamId) {
+		this.steamId = steamId;
 	}
 }

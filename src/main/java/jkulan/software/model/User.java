@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -12,19 +13,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.social.security.SocialUserDetails;
 
 /**
  * Created by tth on 1/18/16.
  */
 @javax.persistence.Entity
 @Table(name = "users")
-public class User implements UserDetails, Entity, SocialUserDetails {
+public class User implements UserDetails, Entity {
 	// ------------------------
     // PRIVATE FIELDS
     // ------------------------
@@ -36,25 +35,33 @@ public class User implements UserDetails, Entity, SocialUserDetails {
     private long id;
 
     // The jkulan.software.model's name
-    @Column(unique = true, length = 16, nullable = false)
+    @Column(unique = true, length = 32, nullable = false)
     private String name;
     
     @ElementCollection(fetch = FetchType.EAGER)
 	private Set<String> roles = new HashSet<String>();
     
     // The jkulan.software.model's address
-    @NotNull
     private String address;
 
-    @NotNull
     private String email;
 
     @Column(length = 80, nullable = false)
 	private String password;
-    
+    @Column(length = 80, nullable = true)
     private String steamId;
+    @Column(length = 80, nullable = false)
+    private String uuid;
     
-    // ------------------------
+    public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	// ------------------------
     // PUBLIC METHODS
     // ------------------------
 	public User(String name, Set<String> roles, String address,
@@ -67,7 +74,9 @@ public class User implements UserDetails, Entity, SocialUserDetails {
 		this.password = password;
 	}
     
-    public User() { }
+    public User() {
+    	this.uuid = UUID.randomUUID().toString();
+    }
 
     public User(long id) {
         this.id = id;
@@ -164,6 +173,12 @@ public class User implements UserDetails, Entity, SocialUserDetails {
 		final Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
 		final Set<String> roles = this.getRoles();
 
+		if (!isComplete()) {
+			// We're missing required info
+			authorities.add(new SimpleGrantedAuthority("ROLE_PRE_AUTH"));
+			return authorities;
+		}
+		
 		if (roles == null) {
 			return Collections.emptyList();
 		}
@@ -182,16 +197,24 @@ public class User implements UserDetails, Entity, SocialUserDetails {
 				+ (password != null) + ", grantedAuthorities="+getAuthorities()+"]";
 	}
 
-	@Override
-	public String getUserId() {
-		return getSteamId();
-	}
-
 	public String getSteamId() {
 		return steamId;
 	}
 
 	public void setSteamId(String steamId) {
 		this.steamId = steamId;
+	}
+	public boolean isComplete() {
+		return steamId != null && email != null;
+	}
+	public void completeUser(User user) {
+		if (user != null) {
+			if (steamId == null && user.getSteamId() != null) {
+				steamId = user.getSteamId();
+			}
+			if (email == null && user.getEmail() != null) {
+				email = user.getEmail();
+			}
+		}
 	}
 }

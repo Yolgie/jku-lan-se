@@ -271,6 +271,7 @@ public class SamlConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public SAMLEntryPoint samlEntryPoint() {
         SAMLEntryPoint samlEntryPoint = new SAMLEntryPoint();
+        
         samlEntryPoint.setDefaultProfileOptions(defaultWebSSOProfileOptions());
         return samlEntryPoint;
     }
@@ -342,10 +343,12 @@ public class SamlConfiguration extends WebSecurityConfigurerAdapter {
     // Handler deciding where to redirect user after successful login
     @Bean
     public SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
-        SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
-                new SavedRequestAwareAuthenticationSuccessHandler();
-        successRedirectHandler.setDefaultTargetUrl("/");
-        return successRedirectHandler;
+//        SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
+//                new SavedRequestAwareAuthenticationSuccessHandler();
+    	MyAuthenticationSuccessHandler successRedirectHandler =
+    			new MyAuthenticationSuccessHandler();
+		successRedirectHandler.setDefaultTargetUrl("/");    	
+		return successRedirectHandler;
     }
     
 	// Handler deciding where to redirect user after failed login
@@ -513,6 +516,9 @@ public class SamlConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http.httpBasic()
 			.authenticationEntryPoint(samlEntryPoint());
+        http.authorizeRequests()
+			.antMatchers("/saml/**")
+			.permitAll();
         http
     		.addFilterBefore(metadataGeneratorFilter(), ChannelProcessingFilter.class)
     		.addFilterAfter(samlFilter(), BasicAuthenticationFilter.class);

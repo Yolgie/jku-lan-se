@@ -3,14 +3,11 @@ package jkulan.software.controllers;
 import java.security.Principal;
 import java.text.MessageFormat;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +19,6 @@ import com.google.common.base.Throwables;
  */
 @Controller
 public class MainController implements ErrorController {
-	@Inject
-	private Provider<ConnectionRepository> connectionRepositoryProvider;
-//	@Inject
-//	private final AccountRepository accountRepository;
-	
 	private static final String PATH = "/error";
 
 	@PreAuthorize("permitAll()")
@@ -73,15 +65,9 @@ public class MainController implements ErrorController {
 		}
 		return "";
 	}
-	private ConnectionRepository getConnectionRepository() {
-		return connectionRepositoryProvider.get();
-	}
 	@PreAuthorize("permitAll()")
 	@RequestMapping("/")
 	public String index(Principal currentUser, Model model) {
-		model.addAttribute("connectionsToProviders", getConnectionRepository().findAllConnections());
-	//	model.addAttribute(accountRepository.findAccountByUsername(currentUser.getName()));
-		
 		return "index";
 	}
 }

@@ -21,7 +21,7 @@ public class LoginController {
         @PreAuthorize("permitAll()")
         public String logout()
         {
-            return "redirect:/login?logout";
+            return "logout";
         }
 }
 

@@ -11,8 +11,6 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,12 +33,6 @@ public class UserController {
     // ------------------------
 	
 	private static Log log = LogFactory.getLog(UserController.class);
-	
-	@Inject
-	private UserDetailsService userService;
-
-	@Inject
-	private AuthenticationManager authManager;
 
     @Inject
     private UserDAO userDao;
@@ -67,7 +59,9 @@ public class UserController {
     public String create(String address, String name) {
         User user = null;
         try {
-            //user = new User(address, name);
+        	user = new User();
+        	user.setAddress(address);
+        	user.setName(name);
             userDao.save(user);
         }
         catch (Exception ex) {

@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.openid.OpenIDAuthenticationProvider;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
@@ -28,7 +29,7 @@ import jkulan.software.model.ApiUserDetailsService;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Inject
 	private PasswordEncoder encoder;
-    
+	 
 //    @Bean
 //    Filter csrfHeaderFilter() {
 //        return new OncePerRequestFilter() {
@@ -88,19 +89,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
 	@Override
     protected void configure(final HttpSecurity http) throws Exception {
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
         http
 			.authorizeRequests()
 				.antMatchers("/js/**", "/css/**", "/webjars/**", "/wro/**", 
 						"/favion.ico", "/login/j_spring_openid_security_check")
-					.permitAll()
-				.antMatchers("/saml/**")
 					.permitAll()
 	        .and()
 	        	.formLogin()
 	                .loginPage("/login")
 	                .loginProcessingUrl("/login/authenticate")
 	                .failureUrl("/login?error=bad_credentials")
-//	                .defaultSuccessUrl("/signup")
+	                .successHandler(new MyAuthenticationSuccessHandler())
 	                .permitAll()
 	        .and()
                 .csrf()
@@ -112,7 +112,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.openidLogin()
             .loginPage("/login")
             .loginProcessingUrl("/login/j_spring_openid_security_check")
-//            .defaultSuccessUrl("/signup")
+            .successHandler(new MyAuthenticationSuccessHandler())
             .failureUrl("/login?error=bad_credentials")
             .failureHandler(new OpenIDAuthenticationFailurehandler())
             .authenticationUserDetailsService(apiUserDetailsService())

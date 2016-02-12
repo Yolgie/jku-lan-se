@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -23,12 +25,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
-import org.springframework.social.security.SocialUserDetails;
-import org.springframework.social.security.SocialUserDetailsService;
 
 public class ApiUserDetailsService implements UserDetailsService, AuthenticationUserDetailsService<OpenIDAuthenticationToken>,
-	SAMLUserDetailsService, SocialUserDetailsService {
+	SAMLUserDetailsService {
 	private static Log log = LogFactory.getLog(ApiUserDetailsService.class);
+	
+	private Pattern STEAM_UID = Pattern.compile("^http://steamcommunity.com/openid/id/(?<id>\\d+)$");
 	
 	@Inject
 	private PasswordEncoder encoder;
@@ -57,11 +59,31 @@ public class ApiUserDetailsService implements UserDetailsService, Authentication
     	assert dao != null;
         log.debug("User "+token.getName()+" authenticated with OpenID");
         log.trace(token);
-        
-        User user = new User();
+        User user = dao.findBySteamId(token.getName());
+        if (user == null) {
+	        user = new User();
+	        final Matcher m = STEAM_UID.matcher(token.getName());
+	        if (m.matches()) {
+	        	final String id = m.group("id");
+	        	if (id != null) {
+		        	log.debug("Steam account, saving id...");
+		        	user.setPassword(encoder.encode(id));	        	
+		        	user.setName(id);
+		        	user.setSteamId(id);
+	        	}
+	        }
+	        dao.save(user);
+        }
         return user;
     }
 
+    public User loadUserByUUID(final String uuid) {
+    	assert dao != null;
+    	log.debug("Looking for User by UUID "+uuid);
+    	User user = dao.findByUuid(uuid);
+    	return user;
+    }
+    
     private Set<String> mapRoles(final SAMLCredential credential) {
     	final Set<String> roles = new HashSet<String>();
     	
@@ -120,15 +142,6 @@ public class ApiUserDetailsService implements UserDetailsService, Authentication
 			dao.save(user);
 		}
 		
-		return user;
-	}
-
-	@Override
-	public SocialUserDetails loadUserByUserId(String userId)
-			throws UsernameNotFoundException {
-		assert dao != null;
-		User user = new User();
-		log.info("User "+userId+" signed in with social");
 		return user;
 	}
     

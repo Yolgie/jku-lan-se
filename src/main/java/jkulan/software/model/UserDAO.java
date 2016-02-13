@@ -1,6 +1,7 @@
 package jkulan.software.model;
 
 import javax.transaction.Transactional;
+
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -21,5 +22,8 @@ public interface UserDAO extends CrudRepository<User, Long> {
      * @param address the jkulan.software.model address.
      */
     public User findByAddress(String address);
+    public User findByName(String name);
+    public User findByUuid(String uuid);
+    public User findBySteamId(String steamid);
 
 } // class UserDao

@@ -1,0 +1,22 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:tiles="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.thymeleaf.org"
+	  layout:decorator="layout"
+	  >
+<head>
+	<title>Index Page</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+	<form name="f" th:action="@{/login/j_spring_openid_security_check}" method="post">
+		<fieldset>
+			<legend>Please login with Steam</legend>
+			<input type="hidden" name="openid_identifier" value="http://steamcommunity.com/openid" />
+			<button type="submit" class="btn"><img th:src="@{/img/sits_large_border.png}" /></button>
+		</fieldset>
+	</form>
+</section>
+</body>
+</html>

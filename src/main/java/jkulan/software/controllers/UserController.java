@@ -4,10 +4,18 @@ package jkulan.software.controllers;
  * Created by tth on 1/18/16.
  */
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import java.security.Principal;
+
+import javax.inject.Inject;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import jkulan.software.model.User;
 import jkulan.software.model.UserDAO;
 
@@ -16,26 +24,44 @@ import jkulan.software.model.UserDAO;
  *
  * @author netgloo
  */
-@Controller
+@RestController
+@PreAuthorize("isAuthenticated()")
+@RequestMapping("/user")
 public class UserController {
+    // ------------------------
+    // PRIVATE FIELDS
+    // ------------------------
+	
+	private static Log log = LogFactory.getLog(UserController.class);
 
+    @Inject
+    private UserDAO userDao;
+	
     // ------------------------
     // PUBLIC METHODS
     // ------------------------
-
+	
+	@RequestMapping(method=RequestMethod.GET)
+	@ResponseBody
+	public Principal user(Principal user) {
+		return user;
+	}
+	
     /**
      * /create  --> Create a new jkulan.software.model and save it in the database.
      *
      * @param address User's address
      * @param name User's name
-     * @return A string describing if the jkulan.software.model is succesfully created or not.
+     * @return A string describing if the jkulan.software.model is successfully created or not.
      */
     @RequestMapping("/create")
     @ResponseBody
     public String create(String address, String name) {
         User user = null;
         try {
-            user = new User(address, name);
+        	user = new User();
+        	user.setAddress(address);
+        	user.setName(name);
             userDao.save(user);
         }
         catch (Exception ex) {
@@ -78,6 +104,7 @@ public class UserController {
             userId = String.valueOf(user.getId());
         }
         catch (Exception ex) {
+        	log.error("User not found", ex);
             return "User not found";
         }
         return "The jkulan.software.model id is: " + userId;
@@ -106,12 +133,4 @@ public class UserController {
         }
         return "User succesfully updated!";
     }
-
-    // ------------------------
-    // PRIVATE FIELDS
-    // ------------------------
-
-    @Autowired
-    private UserDAO userDao;
-
 }

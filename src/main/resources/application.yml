@@ -1,0 +1,84 @@
+# ===============================
+# = DATA SOURCE
+# ===============================
+# Set here configurations for the database connection
+spring:
+    datasource:
+        url:                            jdbc:h2:file:/tmp/jku-lan-se;FILE_LOCK=FS;PAGE_SIZE=1024;CACHE_SIZE=8192
+        username:                       sa
+        password:                       sa
+        driverClassName:                org.h2.Driver
+
+# Keep the connection alive if idle for a long time (needed in production)
+#       testWhileIdle:                  true
+#       validationQuery:                SELECT 1
+
+# ===============================
+# = JPA / HIBERNATE
+# ===============================
+    jpa:
+# Use spring.jpa.properties.* for Hibernate native properties (the prefix is
+# stripped before adding them to the entity manager).
+# Allows Hibernate to generate SQL optimized for a particular DBMS
+#       dialect:            org.hibernate.dialect.PostgreSQLDialect
+        database-platform:              org.hibernate.dialect.H2Dialect
+# Show or not log for each sql query
+        show-sql:                       true
+# Hibernate ddl auto (create, create-drop, update): with "update" the database
+# schema will be automatically updated accordingly to java entities found in
+# the project
+        hibernate:
+            ddl-auto:                   update
+# Naming strategy
+            naming-strategy:            org.hibernate.cfg.ImprovedNamingStrategy
+# ===============================
+# = Logging
+# ===============================
+logging:
+    level:
+        org.springframework.web:        INFO
+        org.hibernate:                  ERROR
+        jkulan:                         TRACE
+
+steam:
+#   apiKey:
+# ===============================
+# = Security
+# ===============================
+security:
+    passwordSalt:                       2ef7b5062a020827981a0f5e54112d83
+    user:
+        password:                       password
+    saml:
+        keystorePath:                   classpath:/saml/samlKeystore.jks
+        keystorePassword:               jku123
+        keyName:                        sp
+        entityId:                       urn:oeh:jku:lan:sp
+        aconeturl:                      http://eduid.at/md/aconet-registered.xml
+        adminRoleRegexp:                ^https://lan[.]oeh[.]jku[.]at/admin$
+google:
+    client:
+#        clientId:
+#        clientSecret:
+        accessTokenUri:             https://www.googleapis.com/oauth2/v3/tokeninfo
+        userAuthorizationUri:       https://accounts.google.com/o/oauth2/v2/auth
+        tokenName:                  oauth_token
+        authenticationScheme:       query
+        clientAuthenticationScheme: form
+    resource:
+        userInfoUri:                https://www.googleapis.com/auth/plus.login
+# ===============================
+# = Wro4J config
+# ===============================
+wro:
+    preProcessors:                  lessCssImport
+    postProcessors:                 less4j,cssVariables,cssMinJawr,jsMin
+# set to 1 second to check for resource changes
+    resourceWatcherUpdatePeriod:    0
+    ignoreMissingResources:         false
+
+# ===============================
+# = Application
+# ===============================
+application:
+    url:                            /

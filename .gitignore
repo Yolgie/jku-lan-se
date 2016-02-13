@@ -3,6 +3,7 @@ gradle
 .gradle
 gradlew
 gradlew.bat
+Steam.properties
 .idea
 *~
 ~*

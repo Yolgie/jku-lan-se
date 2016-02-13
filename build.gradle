@@ -44,6 +44,7 @@ dependencies {
     compile 'org.openid4java:openid4java:1.0.0'
     compile 'org.springframework.security:spring-security-openid'
 
+    compile('com.github.koraktor:steam-condenser:1.3.9')
 }
 
 task wrapper(type: Wrapper) {

@@ -6,7 +6,7 @@
 <head>
 	<title>JKU LAN</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<link th:href="@{/wro/css/angular-bootstrap.css}" rel="stylesheet"></link>
+	<link th:href="@{/wro/css/angular-bootstrap.css}" rel="stylesheet"/>
 </head>
 
 <body ng-app="webApp">
@@ -28,9 +28,9 @@
 	                <li th:classappend="${page == 'messages' ? 'active' : ''}"><a href="#" th:href="@{/user}">Users</a></li>
 	            </ul>
 	            <ul class="nav navbar-nav navbar-right">
-	                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login" th:href="@{/login}">Sign in</a></li>
-	                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/saml/login" th:href="@{/saml/login}">Federated Login</a></li>
-	                <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="/logout" th:href="@{/logout}">Logout</a></li>
+	                <li th:if="${#authorization?.expression('!isAuthenticated()')}"><a href="/login" th:href="@{/login}">Sign in</a></li>
+	                <li th:if="${#authorization?.expression('!isAuthenticated()')}"><a href="/saml/login" th:href="@{/saml/login}">Federated Login</a></li>
+	                <li th:if="${#authorization?.expression('isAuthenticated()')}"><a href="/logout" th:href="@{/logout}">Logout</a></li>
 	            </ul>
 	        </div>
 	    </div>

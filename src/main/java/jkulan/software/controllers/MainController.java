@@ -26,4 +26,18 @@ public class MainController {
     public String users(){
     	return "userlist";
     }
+
+    @RequestMapping("/helper")
+    @PreAuthorize("hasRole('ROLE_HELPER')")
+    @ResponseBody
+    public String helper(){
+    	return "you are helper";
+    }
+
+    @RequestMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseBody
+    public String admin(){
+    	return "you are admin";
+    }
 }

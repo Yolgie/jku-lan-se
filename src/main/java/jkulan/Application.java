@@ -1,4 +1,4 @@
-package jkulan.software;
+package jkulan;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

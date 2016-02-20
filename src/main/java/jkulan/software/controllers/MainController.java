@@ -1,5 +1,6 @@
 package jkulan.software.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -11,9 +12,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MainController {
 
     @RequestMapping("/")
-    @ResponseBody
     public String index() {
-        return "Proudly handcrafted by TTH";
+        return "index";
+    }
+    
+    @RequestMapping("/login")
+    public String login() {
+    	return "login";
     }
 
+    @RequestMapping("/users")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String users(){
+    	return "userlist";
+    }
 }

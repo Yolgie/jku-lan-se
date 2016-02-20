@@ -23,6 +23,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import jkulan.auth.SteamClient;
 
+/**
+ * Spring Security Main config.
+ * Since all authentication work is offloaded to pac4j, this configuration is 
+ * mainly responsible for calling the right pac4j clients, defined in the 
+ * {@link Pac4JConfiguration}, according to the login method chosen by the user.
+ * @author fuero
+ *
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity
@@ -65,13 +73,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return ep;
 	}
 	
+	/**
+	 * Defines and authorizes all requests to the available login methods, 
+	 * represented by their AuthenticationEntryPoints.
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		// Forces the SecurityInterceptor into the entrypoints
 		http.authorizeRequests()
-//			.antMatchers("/callback/**").permitAll()
 			.antMatchers("/saml/**").authenticated()
 			.antMatchers("/steam/**").authenticated()
 			.antMatchers("/google/**").authenticated();
+		// Assigns the entrypoints to URLs
 		http.exceptionHandling().defaultAuthenticationEntryPointFor(samlEntryPoint(), new AntPathRequestMatcher("/saml/**"));
 		http.exceptionHandling().defaultAuthenticationEntryPointFor(steamEntryPoint(), new AntPathRequestMatcher("/steam/**"));
 		http.exceptionHandling().defaultAuthenticationEntryPointFor(googleEntryPoint(), new AntPathRequestMatcher("/google/**"));
@@ -94,13 +107,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public SessionFixationProtectionStrategy sas() {
 		return new SessionFixationProtectionStrategy();
 	}
-	
-    @Bean(name="myAuthenticationManager")
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
     
+	/**
+	 * *BEWARE* Spring Boot auto-magically loads this with {@link FilterRegistrationBean}
+	 * @param auth Auto-Wiring
+	 * @return the Filter
+	 */
     protected Filter clientFilter(AuthenticationManager auth) {
 		ClientAuthenticationFilter filter = new ClientAuthenticationFilter("/");
 		filter.setClients(config.getClients());

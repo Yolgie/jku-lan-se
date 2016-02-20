@@ -11,6 +11,10 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.openid.client.BaseOpenIdClient;
 import org.pac4j.openid.credentials.OpenIdCredentials;
 
+/**
+ * Necessary to login via Steam, as pac4j provides no generic OpenID client.
+ * @author fuero
+ */
 public class SteamClient extends BaseOpenIdClient<CommonProfile> {
 	private static final Log logger = LogFactory.getLog(SteamClient.class);
 	public static final String STEAM_OPENID_IDENTIFIER = "http://steamcommunity.com/openid";

@@ -41,6 +41,7 @@ public class MainController {
 	}
 
 	private UserProfile getProfile(WebContext context) {
+		@SuppressWarnings("rawtypes")
 		final ProfileManager manager = new ProfileManager(context);
 		return manager.get(true);
 	}

@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.common.base.Throwables;
 
+/**
+ * Bare essentials error page controller.
+ * @author fuero
+ */
 @Controller
 public class MyErrorController implements ErrorController {
 	private static final String PATH = "/error";

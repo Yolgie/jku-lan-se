@@ -1,7 +1,5 @@
 package jkulan.config;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.pac4j.oidc.client.OidcClient;
@@ -17,17 +15,23 @@ import com.nimbusds.jose.JWSAlgorithm;
 
 import jkulan.auth.SteamClient;
 
+/**
+ * Initializes all pac4j clients and registers them with its config class.
+ * @author fuero
+ *
+ */
 @Configuration
+// Spring Boot Autoconfig doesn't scan this package, so we have to force this.
 @ComponentScan(basePackages = "org.pac4j.springframework.web")
 public class Pac4JConfiguration {
-	private static final Log log = LogFactory.getLog(Pac4JConfiguration.class);
-	
+	/**
+	 * The SAML2 client needs an extra bean to load its config.
+	 * @return The config bean
+	 */
 	@Bean
 	@ConfigurationProperties("saml")
 	public SAML2ClientConfiguration saml2Config() {
 		final SAML2ClientConfiguration config = new SAML2ClientConfiguration();
-		System.out.println(config);
-		log.trace(String.format("SAML2 Config %s", config.toString()));
 		return config;
 	}
 	
@@ -43,6 +47,14 @@ public class Pac4JConfiguration {
 		return steamClient;
 	}
 	
+	
+	/**
+	 * Reads clientID and secret from Spring Boot's config store
+	 * and initializes the OpenID Connect client for Google.
+	 * Qualifiers are needed, as this class is loaded multiple times for
+	 * multiple OpenID Connect IDPs.
+	 * @return the OpenID Connect client for Google
+	 */
 	@Bean
 	@Qualifier("googleClient")
 	@ConfigurationProperties("google")
@@ -53,6 +65,11 @@ public class Pac4JConfiguration {
 		return oidcClient;
 	}
 	
+	/**
+	 * Assembles pac4j's config, registering all clients.
+	 * @param saml2Client autowiring
+	 * @return The config to be used in {@link SecurityConfiguration}
+	 */
 	@Bean
 	@Qualifier("pac4j-config")
 	public Config config(SAML2Client saml2Client) {

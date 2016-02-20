@@ -15,13 +15,18 @@ public class UserController {
     @Autowired
     private UserDAO userDao;
 
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public RESTDataWrapperDTO<User> search(@RequestParam String name) {
+    	return new RESTDataWrapperDTO<User>(userDao.findUserByName(name), true);
+    }
+
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public RESTDataWrapperDTO<User> show(@PathVariable long id) {
         return new RESTDataWrapperDTO<User>(userDao.findOne(id), true);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.POST)
-    public RESTDataWrapperDTO<User> update(@PathVariable long id, @RequestParam(value = "name") String name) {
+    public RESTDataWrapperDTO<User> update(@PathVariable long id, @RequestParam String name) {
         RESTDataWrapperDTO<User> result = new RESTDataWrapperDTO<>();
         User user = userDao.findOne(id);
         user.setName(name);
@@ -33,7 +38,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "new", method = RequestMethod.POST)
-    public RESTDataWrapperDTO<User> create(@RequestParam(value = "name") String name) {
+    public RESTDataWrapperDTO<User> create(@RequestParam String name) {
         RESTDataWrapperDTO<User> result = new RESTDataWrapperDTO<>();
         User user = new User();
         user.setName(name);

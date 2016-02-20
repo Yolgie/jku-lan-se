@@ -1,0 +1,110 @@
+package jkulan.config;
+
+import javax.servlet.Filter;
+
+import org.pac4j.core.config.Config;
+import org.pac4j.oidc.client.OidcClient;
+import org.pac4j.saml.client.SAML2Client;
+import org.pac4j.springframework.security.authentication.ClientAuthenticationProvider;
+import org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint;
+import org.pac4j.springframework.security.web.ClientAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import jkulan.auth.SteamClient;
+
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+	@Autowired
+	@Qualifier("pac4j-config")
+    private Config config;
+	
+	@Autowired
+	private SAML2Client saml2Client;
+	
+	@Autowired
+	private SteamClient steamClient;
+	
+	@Autowired
+	@Qualifier("googleClient")
+	private OidcClient googleClient;
+	
+	@Bean
+	@Qualifier("samlEntryPoint")
+	public ClientAuthenticationEntryPoint samlEntryPoint() {
+		ClientAuthenticationEntryPoint ep = new ClientAuthenticationEntryPoint();
+		ep.setClient(saml2Client);
+		return ep;
+	}
+	
+	@Bean
+	@Qualifier("steamEntryPoint")
+	public ClientAuthenticationEntryPoint steamEntryPoint() {
+		ClientAuthenticationEntryPoint ep = new ClientAuthenticationEntryPoint();
+		ep.setClient(steamClient);
+		return ep;
+	}
+	
+	@Bean
+	@Qualifier("googleEntryPoint")
+	public ClientAuthenticationEntryPoint googleEntryPoint() {
+		ClientAuthenticationEntryPoint ep = new ClientAuthenticationEntryPoint();
+		ep.setClient(googleClient);
+		return ep;
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+//			.antMatchers("/callback/**").permitAll()
+			.antMatchers("/saml/**").authenticated()
+			.antMatchers("/steam/**").authenticated()
+			.antMatchers("/google/**").authenticated();
+		http.exceptionHandling().defaultAuthenticationEntryPointFor(samlEntryPoint(), new AntPathRequestMatcher("/saml/**"));
+		http.exceptionHandling().defaultAuthenticationEntryPointFor(steamEntryPoint(), new AntPathRequestMatcher("/steam/**"));
+		http.exceptionHandling().defaultAuthenticationEntryPointFor(googleEntryPoint(), new AntPathRequestMatcher("/google/**"));
+		http.logout();
+	}
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(clientProvider());
+	}
+	
+	@Bean
+	public ClientAuthenticationProvider clientProvider() {
+		ClientAuthenticationProvider prov = new ClientAuthenticationProvider();
+		prov.setClients(config.getClients());
+		return prov;
+	}
+	
+	@Bean
+	public SessionFixationProtectionStrategy sas() {
+		return new SessionFixationProtectionStrategy();
+	}
+	
+    @Bean(name="myAuthenticationManager")
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+    
+    protected Filter clientFilter(AuthenticationManager auth) {
+		ClientAuthenticationFilter filter = new ClientAuthenticationFilter("/");
+		filter.setClients(config.getClients());
+		filter.setAuthenticationManager(auth);
+		return filter;
+	}
+}

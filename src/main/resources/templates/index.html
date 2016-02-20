@@ -1,0 +1,14 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:tiles="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org"
+>
+    <head><title>FOO</title></head>
+    <body>
+        <a href="/saml/index.html">SAML</a>
+        <a href="/steam/index.html">Steam</a>
+        <a href="/google/index.html">Google</a>
+        <p th:text="${profile}">No Profile</p>
+        <a href="/logout">Logout</a>
+    </body>
+</html>

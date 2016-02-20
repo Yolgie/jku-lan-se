@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot and Thymeleaf example</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../style/style.css">
+
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+</head>
+<body ng-app="">
+<div id="headerbar">
+    <div class="wrapper">HEADERBAR</div>
+</div>
+<div id="content" class="wrapper">
+    <div ng-include="'authForm.html'"></div>
+    <h3>Spring Boot and Thymeleaf</h3>
+    <p>Hello World!</p>
+</div>
+<div id="footerbar">
+    <div class="wrapper">FOOTERBAR</div>
+</div>
+</body>
+</html>

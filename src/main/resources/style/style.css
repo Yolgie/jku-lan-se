@@ -1,0 +1,66 @@
+/* Colors
+$white: rgb(255,255,255);
+$c1: rgb(0,156,179); // cyan-ish
+$c2: rgb(223,195,0); // ocher
+*/
+@import 'reset.css';
+
+/* Defaults */
+body {
+    color: rgb(0, 50, 50);
+    background: url('../images/mainbg.png') 50% 50% repeat rgb(255, 255, 255);
+    background-size: 16px;
+
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Layout */
+#headerbar {
+    height: 26px;
+    width: 100%;
+    border: 0 none;
+    border-bottom: 3px solid rgb(223, 195, 0);
+
+    background: rgb(0, 156, 179);
+    color: rgb(255, 255, 255);
+}
+
+.wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /*TODO*/
+    margin: 0 auto;
+}
+
+#content {
+    background: rgb(245, 255, 255);
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+#footerbar {
+    position: absolute;
+    bottom: 0;
+    height: 26px;
+    width: 100%;
+    border: 0 none;
+    border-top: 3px solid rgb(223, 195, 0);
+
+    background: rgb(0, 156, 179);
+    color: rgb(255, 255, 255);
+}
+
+/* Forms */
+#authform {
+    margin: 1.2em;
+    padding: .6em .2em .2em;
+    background: rgb(255, 255, 255);
+}
+
+fieldset {
+    border: 2px solid rgb(0, 156, 179);
+    border-radius: 6px;
+    color: rgb(0, 156, 179);
+
+    padding: 1em;
+}

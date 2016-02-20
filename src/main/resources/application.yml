@@ -41,6 +41,8 @@ logging:
     level:
         org.hibernate:                      ERROR
         jkulan:                             TRACE
+        org.pac4j.springframework.security.web: TRACE
+        org.springframework.security: TRACE
 saml:
     keystorePath:                           resource:/saml/samlKeystore.jks
     keystorePassword:                       jku123

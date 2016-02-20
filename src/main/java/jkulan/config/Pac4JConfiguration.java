@@ -1,5 +1,7 @@
 package jkulan.config;
 
+import com.nimbusds.jose.JWSAlgorithm;
+import jkulan.software.auth.SteamClient;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.pac4j.oidc.client.OidcClient;
@@ -10,10 +12,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-
-import com.nimbusds.jose.JWSAlgorithm;
-
-import jkulan.software.auth.SteamClient;
 
 /**
  * Initializes all pac4j clients and registers them with its config class.
@@ -31,23 +29,19 @@ public class Pac4JConfiguration {
 	@Bean
 	@ConfigurationProperties("saml")
 	public SAML2ClientConfiguration saml2Config() {
-		final SAML2ClientConfiguration config = new SAML2ClientConfiguration();
-		return config;
+		return new SAML2ClientConfiguration();
 	}
 	
 	@Bean
 	public SAML2Client saml2Client(SAML2ClientConfiguration config) {
-		final SAML2Client saml2Client = new SAML2Client(config);
-		return saml2Client;
+		return new SAML2Client(config);
 	}
 	
 	@Bean
 	public SteamClient steamClient() {
-		final SteamClient steamClient = new SteamClient();
-		return steamClient;
+		return new SteamClient();
 	}
-	
-	
+
 	/**
 	 * Reads clientID and secret from Spring Boot's config store
 	 * and initializes the OpenID Connect client for Google.

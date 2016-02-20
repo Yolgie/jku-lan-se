@@ -1,5 +1,7 @@
 package jkulan.config;
 
+import jkulan.software.auth.MyAuthenticationSuccessHandler;
+import jkulan.software.auth.MyUserDetailsService;
 import jkulan.software.auth.SteamClient;
 import org.pac4j.core.config.Config;
 import org.pac4j.oidc.client.OidcClient;
@@ -9,6 +11,7 @@ import org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint;
 import org.pac4j.springframework.security.web.ClientAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,10 +20,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.servlet.Filter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Spring Security Main config.
@@ -47,6 +50,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	@Qualifier("googleClient")
 	private OidcClient googleClient;
+
+	@Autowired
+	MyUserDetailsService myUserDetailsService;
 
 	@Bean
 	@Qualifier("samlEntryPoint")
@@ -87,7 +93,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.exceptionHandling().defaultAuthenticationEntryPointFor(samlEntryPoint(), new AntPathRequestMatcher("/saml/**"));
 		http.exceptionHandling().defaultAuthenticationEntryPointFor(steamEntryPoint(), new AntPathRequestMatcher("/steam/**"));
 		http.exceptionHandling().defaultAuthenticationEntryPointFor(googleEntryPoint(), new AntPathRequestMatcher("/google/**"));
-		http.logout();
+		//http.addFilterAfter(clientFilter(authenticationManager()), BasicAuthenticationFilter.class);
+		http.logout()
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+				.logoutSuccessUrl("/");
+
 	}
 
 	@Override
@@ -99,12 +109,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public ClientAuthenticationProvider clientProvider() {
 		ClientAuthenticationProvider prov = new ClientAuthenticationProvider();
 		prov.setClients(config.getClients());
+		prov.setUserDetailsService(myUserDetailsService);
 		return prov;
 	}
 
+//	@Bean
+//	public SessionFixationProtectionStrategy sas() {
+//		return new SessionFixationProtectionStrategy();
+//	}
+
 	@Bean
-	public SessionFixationProtectionStrategy sas() {
-		return new SessionFixationProtectionStrategy();
+	public MyAuthenticationSuccessHandler myAuthenticationSuccessHandler() {
+		return new MyAuthenticationSuccessHandler();
 	}
 
 	/**
@@ -112,10 +128,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 * @param auth Auto-Wiring
 	 * @return the Filter
 	 */
-    protected Filter clientFilter(AuthenticationManager auth) {
-		ClientAuthenticationFilter filter = new ClientAuthenticationFilter("/");
+	@Bean
+    protected FilterRegistrationBean clientFilter(AuthenticationManager auth) throws Exception{
+		ClientAuthenticationFilter filter = new ClientAuthenticationFilter("/callback");
+		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(filter);
 		filter.setClients(config.getClients());
-		filter.setAuthenticationManager(auth);
-		return filter;
+		filter.setAuthenticationManager(super.authenticationManager());
+		filter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler());
+		//filter.setAuthenticationFailureHandler(new MyAuthenticationFailureHandler());
+		List<String> patterns = new ArrayList<>();
+		patterns.add("/callback");
+		filterRegistrationBean.setUrlPatterns(patterns);
+		return filterRegistrationBean;
 	}
 }

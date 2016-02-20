@@ -6,15 +6,14 @@ import jkulan.software.model.ArrivalLog;
 import jkulan.software.model.ArrivalLogDAO;
 import jkulan.software.model.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.PermitAll;
 import java.io.Serializable;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("/arrivalLog/")

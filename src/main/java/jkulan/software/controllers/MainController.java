@@ -12,14 +12,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MainController {
 
     @RequestMapping("/")
-//    @ResponseBody
-//    @PreAuthorize("hasRole('ROLE_USER')")
     public String index() {
         return "index";
     }
+    
     @RequestMapping("/login")
     public String login() {
     	return "login";
     }
 
+    @RequestMapping("/users")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String users(){
+    	return "userlist";
+    }
 }

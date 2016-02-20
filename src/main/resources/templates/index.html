@@ -8,8 +8,8 @@
     <script type="text/javascript" src="../js/angular.min.js"></script>
 </head>
 <body ng-app="">
-<div id="headerbar">
-    <div class="wrapper">HEADERBAR</div>
+<div id="headerbar" th:replace="header :: header">
+
 </div>
 <div id="content" class="wrapper">
     <div ng-include="'authForm.html'"></div>

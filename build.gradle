@@ -6,6 +6,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'spring-boot'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 group = 'JKU-LAN-DEMO'
 version = '1.0-SNAPSHOT'

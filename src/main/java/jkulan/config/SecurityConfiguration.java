@@ -1,7 +1,6 @@
 package jkulan.config;
 
-import javax.servlet.Filter;
-
+import jkulan.software.auth.SteamClient;
 import org.pac4j.core.config.Config;
 import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.saml.client.SAML2Client;
@@ -21,7 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import jkulan.auth.SteamClient;
+import javax.servlet.Filter;
 
 /**
  * Spring Security Main config.
@@ -109,7 +108,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	/**
-	 * *BEWARE* Spring Boot auto-magically loads this with {@link FilterRegistrationBean}
+	 * *BEWARE* Spring Boot auto-magically loads this with {@link org.springframework.boot.context.embedded.FilterRegistrationBean}
 	 * @param auth Auto-Wiring
 	 * @return the Filter
 	 */

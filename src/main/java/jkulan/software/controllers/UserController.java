@@ -17,7 +17,7 @@ public class UserController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public RESTDataWrapperDTO<User> show(@PathVariable long id) {
-        return new RESTDataWrapperDTO<User>(userDao.findOne(id), true);
+        return new RESTDataWrapperDTO<>(userDao.findOne(id), true);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.POST)

@@ -1,16 +1,14 @@
-package jkulan.controllers;
+package jkulan.software.controllers;
 
-import java.text.MessageFormat;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.base.Throwables;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.common.base.Throwables;
+import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 
 /**
  * Bare essentials error page controller.

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.nimbusds.jose.JWSAlgorithm;
 
-import jkulan.auth.SteamClient;
+import jkulan.software.auth.SteamClient;
 
 /**
  * Initializes all pac4j clients and registers them with its config class.

@@ -1,4 +1,4 @@
-package jkulan.auth;
+package jkulan.software.auth;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

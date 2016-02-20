@@ -25,8 +25,8 @@ import jkulan.auth.SteamClient;
 
 /**
  * Spring Security Main config.
- * Since all authentication work is offloaded to pac4j, this configuration is 
- * mainly responsible for calling the right pac4j clients, defined in the 
+ * Since all authentication work is offloaded to pac4j, this configuration is
+ * mainly responsible for calling the right pac4j clients, defined in the
  * {@link Pac4JConfiguration}, according to the login method chosen by the user.
  * @author fuero
  *
@@ -38,17 +38,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	@Qualifier("pac4j-config")
     private Config config;
-	
+
 	@Autowired
 	private SAML2Client saml2Client;
-	
+
 	@Autowired
 	private SteamClient steamClient;
-	
+
 	@Autowired
 	@Qualifier("googleClient")
 	private OidcClient googleClient;
-	
+
 	@Bean
 	@Qualifier("samlEntryPoint")
 	public ClientAuthenticationEntryPoint samlEntryPoint() {
@@ -56,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		ep.setClient(saml2Client);
 		return ep;
 	}
-	
+
 	@Bean
 	@Qualifier("steamEntryPoint")
 	public ClientAuthenticationEntryPoint steamEntryPoint() {
@@ -64,7 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		ep.setClient(steamClient);
 		return ep;
 	}
-	
+
 	@Bean
 	@Qualifier("googleEntryPoint")
 	public ClientAuthenticationEntryPoint googleEntryPoint() {
@@ -72,9 +72,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		ep.setClient(googleClient);
 		return ep;
 	}
-	
+
 	/**
-	 * Defines and authorizes all requests to the available login methods, 
+	 * Defines and authorizes all requests to the available login methods,
 	 * represented by their AuthenticationEntryPoints.
 	 */
 	@Override
@@ -90,24 +90,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.exceptionHandling().defaultAuthenticationEntryPointFor(googleEntryPoint(), new AntPathRequestMatcher("/google/**"));
 		http.logout();
 	}
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(clientProvider());
 	}
-	
+
 	@Bean
 	public ClientAuthenticationProvider clientProvider() {
 		ClientAuthenticationProvider prov = new ClientAuthenticationProvider();
 		prov.setClients(config.getClients());
 		return prov;
 	}
-	
+
 	@Bean
 	public SessionFixationProtectionStrategy sas() {
 		return new SessionFixationProtectionStrategy();
 	}
-    
+
 	/**
 	 * *BEWARE* Spring Boot auto-magically loads this with {@link FilterRegistrationBean}
 	 * @param auth Auto-Wiring

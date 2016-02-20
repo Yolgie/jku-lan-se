@@ -15,5 +15,4 @@ bin
 .project
 .settings
 target
-src/main/resources/saml/samlKeystore.jks
-src/main/resources/saml/aconet.crt
+src/main/resources/saml

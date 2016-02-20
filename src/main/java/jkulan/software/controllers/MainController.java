@@ -12,6 +12,7 @@ public class MainController {
 
     @RequestMapping("/")
     @ResponseBody
+    @PreAuthorize(hasRole("asdf"))
     public String index() {
         return "Proudly handcrafted by TTH";
     }

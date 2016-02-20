@@ -1,13 +1,12 @@
 package jkulan.software.controllers;
 
 import jkulan.software.dto.RESTDataWrapperDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import jkulan.software.model.User;
 import jkulan.software.model.UserDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users/")
@@ -22,7 +21,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.POST)
-    public RESTDataWrapperDTO<User> update(@PathVariable long id, @RequestParam(value="name") String name) {
+    public RESTDataWrapperDTO<User> update(@PathVariable long id, @RequestParam(value = "name") String name) {
         RESTDataWrapperDTO<User> result = new RESTDataWrapperDTO<>();
         User user = userDao.findOne(id);
         user.setName(name);
@@ -34,7 +33,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "new", method = RequestMethod.POST)
-    public RESTDataWrapperDTO<User> create(@RequestParam(value="name") String name) {
+    public RESTDataWrapperDTO<User> create(@RequestParam(value = "name") String name) {
         RESTDataWrapperDTO<User> result = new RESTDataWrapperDTO<>();
         User user = new User();
         user.setName(name);

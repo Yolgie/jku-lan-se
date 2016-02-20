@@ -1,5 +1,7 @@
 package jkulan.software.controllers;
 
+import javax.annotation.security.PermitAll;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,20 +24,20 @@ public class MainController {
     }
 
     @RequestMapping("/users")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('USER')")
     public String users(){
     	return "userlist";
     }
 
     @RequestMapping("/helper")
-    @PreAuthorize("hasRole('ROLE_HELPER')")
+    @PreAuthorize("hasRole('HELPER')")
     @ResponseBody
     public String helper(){
     	return "you are helper";
     }
 
     @RequestMapping("/admin")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     public String admin(){
     	return "you are admin";

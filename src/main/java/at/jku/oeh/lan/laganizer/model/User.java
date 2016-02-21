@@ -18,6 +18,9 @@ public class User implements UserDetails, Serializable {
     @Column(length = 80, nullable = false)
     private String uuid;
 
+    @ManyToMany
+	@ElementCollection
+    private Set<Team> teams;
 
     @NotNull
     private String name;
@@ -161,6 +164,4 @@ public class User implements UserDetails, Serializable {
     public String toString() {
         return "User: " + getName() + " with E-Mail: " + getEmail() + " and Roles: " + roles.toString();
     }
-
-
 }

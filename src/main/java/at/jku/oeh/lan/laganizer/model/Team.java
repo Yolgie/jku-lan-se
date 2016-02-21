@@ -1,15 +1,14 @@
 package at.jku.oeh.lan.laganizer.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-import java.util.List;
-
-import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -21,22 +20,29 @@ public class Team implements Serializable{
 	
 	@NotNull
 	@ElementCollection
-	@CollectionTable(name = "team_players", joinColumns = @JoinColumn(name = "id"))
-	private List<User> players;
+	@ManyToMany(mappedBy = "Team.players")
+	private Set<User> players;
 	
-	@NotNull
+//	@NotNull
 	@ManyToOne
 	private Tournament tournament;
 	
 	@NotNull
 	private String name;
 
-	public List<User> getPlayers() {
+	public Set<User> getPlayers() {
 		return players;
 	}
-
-	public void setPlayers(List<User> players) {
-		this.players = players;
+	
+	public void addPlayer(User player) {
+		if(players == null){
+			players = new HashSet<>();
+		}
+		players.add(player);
+	}
+	
+	public void delPlayer(User player) {
+		players.remove(player);
 	}
 
 	public Tournament getTournament() {

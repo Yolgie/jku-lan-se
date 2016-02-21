@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pageheader</title>
+</head>
+<body>
+<div th:fragment="header" id="headerbar">
+    <div class="wrapper">
+        <nav id="navbar">
+            <ul>
+                <li>NAV1</li>
+                <li>NAV2 --very-very-very-long--</li>
+                <li>NAV3</li>
+                <li>NAV4 --long--</li>
+            </ul>
+        </nav>
+        <div id="userbar">PROFILE</div>
+
+    </div>
+</div>
+
+<div th:fragment="footer" id="footerbar">
+    <div class="wrapper">FOOTERBAR</div>
+</div>
+</body>
+</html>

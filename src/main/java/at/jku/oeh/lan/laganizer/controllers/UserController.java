@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 
+import javax.annotation.security.PermitAll;
+
 @RestController
 @RequestMapping("/users/")
 public class UserController {

@@ -1,7 +1,6 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.security.PermitAll;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,34 +27,28 @@ public class TeamController {
     @Autowired
     private TournamentDAO tournamentDao;
 
-    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @RequestMapping(value = "new", method = RequestMethod.POST)
     public RESTDataWrapperDTO<Team> create(@RequestParam long userId, @RequestParam long tournamentId){
     	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
+		result.setSuccess(false);
+		
     	Team team = new Team();
     	
     	User user = userDao.findOne(userId);
     	if(user != null){
         	team.setName(user.getName());
-        	
-        	List<User> players = new ArrayList<>();
-        	players.add(user);
-        	team.setPlayers(players);
+        	team.addPlayer(user);
         	
         	Tournament t = tournamentDao.findOne(tournamentId);
         	if(t != null){
         		team.setTournament(t);
 
             	teamDao.save(team);
-            	result.setSuccess(true);	
-        	}else{
-        		result.setSuccess(false);
+            	result.setSuccess(true);
         	}
-    	}else{
-    		result.setSuccess(false);
     	}
     	
     	result.setData(team);
-    	
     	return result;
     }
     
@@ -63,20 +56,18 @@ public class TeamController {
     public RESTDataWrapperDTO<Team> addPlayer(@RequestParam long id, @RequestParam long userId){
     	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
     	Team team = teamDao.findOne(id);
-    	result.setData(team);
+		result.setSuccess(false);
     	
-    	if(team == null){
-    		result.setSuccess(false);
-    	}else{
-        	result.setSuccess(true);
-        	List<User> players = team.getPlayers();
+    	if(team != null){
         	User user;
         	if((user = userDao.findOne(userId)) != null){
-        		players.remove(user);
+            	team.addPlayer(user);
+            	teamDao.save(team);
+            	result.setSuccess(true);
         	}
-        	team.setPlayers(players);
     	}
-    	
+
+    	result.setData(team);
     	return result;
     }
     
@@ -84,25 +75,23 @@ public class TeamController {
     public RESTDataWrapperDTO<Team> delPlayer(@RequestParam long id, @RequestParam long userId){
     	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
     	Team team = teamDao.findOne(id);
-    	result.setData(team);
     	
-    	if(team == null){
-    		result.setSuccess(false);
-    	}else{
-        	result.setSuccess(true);
-        	List<User> players = team.getPlayers();
-        	
+    	result.setSuccess(false);
+    	
+    	if(team != null){
         	User user;
         	if((user = userDao.findOne(userId)) != null){
-        		players.remove(user);
+        		team.delPlayer(user);
+            	teamDao.save(team);
+            	result.setSuccess(true);
         	}
-        	team.setPlayers(players);
         	
-        	if(players.size() <= 0){
+        	if(team.getPlayers().size() <= 0){
         		teamDao.delete(id);
         	}
     	}
-    	
+
+    	result.setData(team);
     	return result;
     }
     
@@ -111,14 +100,15 @@ public class TeamController {
     	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
     	Team team = teamDao.findOne(id);
     	
-    	result.setData(team);
-    	
     	if(team == null){
     		result.setSuccess(false);
     	}else{
         	team.setName(name);
-        	result.setSuccess(true);	
+        	teamDao.save(team);
+        	result.setSuccess(true);
     	}
+    	
+    	result.setData(team);
     	return result;
     }
     
@@ -127,12 +117,8 @@ public class TeamController {
     	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
     	Team team = teamDao.findOne(id);
     	
+		result.setSuccess(team != null);
     	result.setData(team);
-    	if(team == null){
-    		result.setSuccess(false);
-    	}else{
-        	result.setSuccess(true);	
-    	}
     	return result;
     }
 }

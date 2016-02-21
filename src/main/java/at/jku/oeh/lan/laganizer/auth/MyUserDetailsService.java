@@ -18,7 +18,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @Component
@@ -37,13 +40,17 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
 
     @Override
     public UserDetails loadUserDetails(ClientAuthenticationToken token) throws UsernameNotFoundException {
-        log.info("Tryed to load user Details with token "+token);
+        log.info("Tryed to load user Details with token " + token);
 
-        switch(token.getClientName()) {
-            case "googleClient": return getGoogleUserDetails((OidcProfile) token.getUserProfile());
-            case "SteamClient": return getSteamUserDetails((SteamProfile) token.getUserProfile());
-            case "SAML2Client": return getSamlClientDetails(token);
-            default: throw new UsernameNotFoundException("Unknown Client cannot be used to find user");
+        switch (token.getClientName()) {
+            case "googleClient":
+                return getGoogleUserDetails((OidcProfile) token.getUserProfile());
+            case "SteamClient":
+                return getSteamUserDetails((SteamProfile) token.getUserProfile());
+            case "SAML2Client":
+                return getSamlClientDetails(token);
+            default:
+                throw new UsernameNotFoundException("Unknown Client cannot be used to find user");
         }
 
     }
@@ -51,7 +58,7 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
     private UserDetails getSteamUserDetails(SteamProfile profile) {
         User user = userDAO.findBySteamId(profile.steamId);
 
-        if(user == null) {
+        if (user == null) {
             user = new User();
             user.setSteamId(profile.steamId);
             user.setName(profile.steamId);
@@ -64,7 +71,7 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
     private UserDetails getGoogleUserDetails(OidcProfile profile) {
         User user = userDAO.findByGoogleId(profile.getId());
 
-        if(user == null) {
+        if (user == null) {
             user = new User();
             user.setGoogleId(profile.getId());
             user.setEmail(profile.getEmail());
@@ -79,7 +86,7 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
         SAML2Credentials credentials = (SAML2Credentials) token.getCredentials();
         String userID = credentials.getNameId().getValue();
         User user = userDAO.findBySaml2Id(userID);
-        if(user==null) {
+        if (user == null) {
             user = createFromCredential(credentials);
         }
         return user;
@@ -108,8 +115,8 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
 
     private List<String> getAttributeValues(final Attribute attr) {
         final List<String> result = new ArrayList<>();
-        for(XMLObject o: attr.getAttributeValues()) {
-            if(o instanceof  XSString) {
+        for (XMLObject o : attr.getAttributeValues()) {
+            if (o instanceof XSString) {
                 result.add(((XSString) o).getValue());
             }
         }

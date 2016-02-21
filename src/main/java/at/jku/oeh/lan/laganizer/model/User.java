@@ -42,8 +42,7 @@ public class User implements UserDetails, Serializable {
 
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities()
-    {
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         final Set<GrantedAuthority> authorities = new HashSet<>();
         final Set<String> roles = this.getRoles();
 
@@ -160,7 +159,7 @@ public class User implements UserDetails, Serializable {
     }
 
     public String toString() {
-        return "User: "+getName() +" with E-Mail: "+getEmail()+" and Roles: "+roles.toString();
+        return "User: " + getName() + " with E-Mail: " + getEmail() + " and Roles: " + roles.toString();
     }
 
 

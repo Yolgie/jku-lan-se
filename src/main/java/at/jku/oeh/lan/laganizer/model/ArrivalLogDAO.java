@@ -1,4 +1,4 @@
-package jkulan.software.model;
+package at.jku.oeh.lan.laganizer.model;
 
 import org.springframework.data.repository.CrudRepository;
 

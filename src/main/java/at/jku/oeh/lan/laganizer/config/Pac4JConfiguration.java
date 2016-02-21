@@ -1,7 +1,7 @@
-package jkulan.config;
+package at.jku.oeh.lan.laganizer.config;
 
 import com.nimbusds.jose.JWSAlgorithm;
-import jkulan.software.auth.SteamClient;
+import at.jku.oeh.lan.laganizer.auth.SteamClient;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.pac4j.oidc.client.OidcClient;

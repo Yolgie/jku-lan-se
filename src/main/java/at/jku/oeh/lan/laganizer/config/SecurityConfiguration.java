@@ -1,8 +1,8 @@
-package jkulan.config;
+package at.jku.oeh.lan.laganizer.config;
 
-import jkulan.software.auth.MyAuthenticationSuccessHandler;
-import jkulan.software.auth.MyUserDetailsService;
-import jkulan.software.auth.SteamClient;
+import at.jku.oeh.lan.laganizer.auth.MyAuthenticationSuccessHandler;
+import at.jku.oeh.lan.laganizer.auth.MyUserDetailsService;
+import at.jku.oeh.lan.laganizer.auth.SteamClient;
 import org.pac4j.core.config.Config;
 import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.saml.client.SAML2Client;
@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

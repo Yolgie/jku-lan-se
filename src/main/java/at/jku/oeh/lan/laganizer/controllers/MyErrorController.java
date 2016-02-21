@@ -1,4 +1,4 @@
-package jkulan.software.controllers;
+package at.jku.oeh.lan.laganizer.controllers;
 
 import com.google.common.base.Throwables;
 import org.springframework.boot.autoconfigure.web.ErrorController;

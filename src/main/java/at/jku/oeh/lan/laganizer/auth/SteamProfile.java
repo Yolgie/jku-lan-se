@@ -1,4 +1,4 @@
-package jkulan.software.auth;
+package at.jku.oeh.lan.laganizer.auth;
 
 import org.pac4j.core.profile.CommonProfile;
 

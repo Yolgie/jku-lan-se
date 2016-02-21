@@ -1,10 +1,11 @@
-package jkulan.software.controllers;
+package at.jku.oeh.lan.laganizer.controllers;
 
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import at.jku.oeh.lan.laganizer.model.User;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.RequiresHttpAction;
@@ -13,9 +14,6 @@ import org.pac4j.core.profile.UserProfile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import jkulan.software.model.User;
 
 @Controller
 public class MainController {

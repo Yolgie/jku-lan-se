@@ -1,4 +1,4 @@
-package jkulan.software.auth;
+package at.jku.oeh.lan.laganizer.auth;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

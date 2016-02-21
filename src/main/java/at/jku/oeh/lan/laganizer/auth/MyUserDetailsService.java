@@ -1,7 +1,7 @@
-package jkulan.software.auth;
+package at.jku.oeh.lan.laganizer.auth;
 
-import jkulan.software.model.User;
-import jkulan.software.model.UserDAO;
+import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.UserDAO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opensaml.core.xml.XMLObject;

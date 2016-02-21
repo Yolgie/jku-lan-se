@@ -1,8 +1,8 @@
-package jkulan.software.controllers;
+package at.jku.oeh.lan.laganizer.controllers;
 
-import jkulan.software.dto.RESTDataWrapperDTO;
-import jkulan.software.model.User;
-import jkulan.software.model.UserDAO;
+import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
+import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

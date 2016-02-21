@@ -1,5 +1,6 @@
 package jkulan.software.controllers;
 
+import jkulan.software.model.User;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.RequiresHttpAction;
@@ -24,6 +25,7 @@ public class MainController {
     public String index_html(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map) throws RequiresHttpAction {
         final WebContext context = new J2EContext(request, response);
         map.put("profile", getStringProfile(context));
+        map.put("user", getCurrentUserString(context));
         return "index";
     }
 	@RequestMapping("/saml/index.html")
@@ -50,6 +52,11 @@ public class MainController {
 		final ProfileManager manager = new ProfileManager(context);
 		return manager.get(true);
 	}
+
+    private String getCurrentUserString(WebContext context) {
+        User user = (User) context.getSessionAttribute("user");
+        return user==null ? "": user.toString();
+    }
 
 	private String getStringProfile(WebContext context) {
 		final UserProfile profile = getProfile(context);

@@ -35,7 +35,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	@Qualifier("pac4j-config")
@@ -85,6 +85,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// Forces the SecurityInterceptor into the entrypoints
+		http.csrf().disable();
+		http.formLogin()
+				//Does this generate a penetrable Default Login Form ?
+				.loginPage("/");
 		http.authorizeRequests()
 			.antMatchers("/saml/**").authenticated()
 			.antMatchers("/steam/**").authenticated()

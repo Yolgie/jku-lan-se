@@ -22,22 +22,22 @@ public class User implements UserDetails, Serializable {
     @NotNull
     private String name;
 
+    private String email;
+
     @Column(length = 80, nullable = true)
     private String steamId;
+
+    @Column(length = 80, nullable = true)
+    private String googleId;
+
+    @Column(length = 80, nullable = true)
+    private String saml2Id;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
 
     public User() {
         this.uuid = UUID.randomUUID().toString();
-    }
-
-    public String getSteamId() {
-        return steamId;
-    }
-
-    public void setSteamId(String steamId) {
-        this.steamId = steamId;
     }
 
 
@@ -127,8 +127,41 @@ public class User implements UserDetails, Serializable {
         this.roles = roles;
     }
 
-    public String toString() {
-        return getName();
+    public String getSteamId() {
+        return steamId;
     }
+
+    public void setSteamId(String steamId) {
+        this.steamId = steamId;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
+    public String getSaml2Id() {
+        return saml2Id;
+    }
+
+    public void setSaml2Id(String saml2Id) {
+        this.saml2Id = saml2Id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String toString() {
+        return "User: "+getName() +" with E-Mail: "+getEmail()+" and Roles: "+roles.toString();
+    }
+
 
 }

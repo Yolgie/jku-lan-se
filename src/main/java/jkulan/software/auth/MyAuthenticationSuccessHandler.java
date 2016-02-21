@@ -30,16 +30,9 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
         session.setAttribute("authorities", authentication.getAuthorities());
         ClientAuthenticationToken clientAuthenticationToken = (ClientAuthenticationToken) authentication;
         session.setAttribute(Pac4jConstants.USER_PROFILE, clientAuthenticationToken.getUserProfile());
+        session.setAttribute("user", user);
         response.sendRedirect("/");
 
     }
-
-//    @Override
-//    protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response) {
-//        log.info("Reached Authentication Success Handler");
-//        String target = super.determineTargetUrl(request, response);
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        return "/";
-//    }
 }
 

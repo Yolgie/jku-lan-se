@@ -6,11 +6,9 @@ import at.jku.oeh.lan.laganizer.model.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.PermitAll;
 import java.io.Serializable;
 
 @RestController
-@PermitAll
 @RequestMapping("/users/")
 public class UserController {
 

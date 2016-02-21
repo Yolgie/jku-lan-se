@@ -4,10 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.*;
@@ -16,6 +13,10 @@ import java.util.*;
 public class User extends BaseEntity implements UserDetails, Serializable {
     @Column(length = 80, nullable = false)
     private String uuid;
+
+    @ManyToMany
+    @ElementCollection
+    private Set<Team> teams;
 
     @NotNull
     private String name;

@@ -1,38 +1,37 @@
 package at.jku.oeh.lan.laganizer.model.actionlog;
 
 import at.jku.oeh.lan.laganizer.model.User;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Calendar;
 
-@EntityListeners(AuditingEntityListener.class)
-@MappedSuperclass
-public abstract class Log<T extends LogAction> implements Serializable {
+@Entity
+public class Log <T extends LogAction> implements Serializable {
     @Id
     @GeneratedValue
-    protected long id;
+    private long id;
 
     @NotNull
-    protected T action;
+    private T action;
 
     @NotNull
-    @CreatedDate
-    protected Instant createdDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar timestamp;
 
-    //ToDo change to @CreatedBy
-    // http://docs.spring.io/spring-data/jpa/docs/current/reference/html/#auditing
     @NotNull
     @ManyToOne
-    protected User createdBy;
+    private User reporter;
 
-    protected String note;
+    private String note;
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public T getAction() {
@@ -43,16 +42,20 @@ public abstract class Log<T extends LogAction> implements Serializable {
         this.action = action;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public Calendar getTimestamp() {
+        return timestamp;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
+    public void setTimestamp(Calendar timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
+    public User getReporter() {
+        return reporter;
+    }
+
+    public void setReporter(User reporter) {
+        this.reporter = reporter;
     }
 
     public String getNote() {

@@ -35,8 +35,8 @@ import java.util.List;
  *
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 @EnableWebSecurity
-@Order(1)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	@Qualifier("pac4j-config")
@@ -105,7 +105,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.exceptionHandling().defaultAuthenticationEntryPointFor(samlEntryPoint(), new AntPathRequestMatcher("/saml/**"));
 		http.exceptionHandling().defaultAuthenticationEntryPointFor(steamEntryPoint(), new AntPathRequestMatcher("/steam/**"));
 		http.exceptionHandling().defaultAuthenticationEntryPointFor(googleEntryPoint(), new AntPathRequestMatcher("/google/**"));
-		//http.addFilterAfter(clientFilter(authenticationManager()), BasicAuthenticationFilter.class);
 		http.logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
 				.logoutSuccessUrl("/");

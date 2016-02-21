@@ -10,14 +10,13 @@ import java.io.Serializable;
 import java.util.*;
 
 @Entity
-public class User implements UserDetails, Serializable {
-    @Id
-    @GeneratedValue
-    private long id;
-
+public class User extends BaseEntity implements UserDetails, Serializable {
     @Column(length = 80, nullable = false)
     private String uuid;
 
+    @ManyToMany
+    @ElementCollection
+    private Set<Team> teams;
 
     @NotNull
     private String name;
@@ -39,7 +38,6 @@ public class User implements UserDetails, Serializable {
     public User() {
         this.uuid = UUID.randomUUID().toString();
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -92,14 +90,6 @@ public class User implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -161,6 +151,4 @@ public class User implements UserDetails, Serializable {
     public String toString() {
         return "User: " + getName() + " with E-Mail: " + getEmail() + " and Roles: " + roles.toString();
     }
-
-
 }

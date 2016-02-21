@@ -10,5 +10,5 @@ import javax.transaction.Transactional;
 public interface UserDAO extends CrudRepository<User, Long> {
 
     User findBySteamId(String steamId);
-
+    User findUserByName(String name);
 }

@@ -8,6 +8,7 @@ import org.pac4j.core.profile.UserProfile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,31 +18,42 @@ import java.util.Map;
 public class MainController {
 	@PreAuthorize("permitAll()")
 	@RequestMapping("/")
-	public String index(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map) throws RequiresHttpAction {
+	public String index(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map)
+			throws RequiresHttpAction {
 		return index_html(request, response, map);
 	}
+
 	@RequestMapping("/index.html")
-    public String index_html(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map) throws RequiresHttpAction {
-        final WebContext context = new J2EContext(request, response);
-        map.put("profile", getStringProfile(context));
-        return "index";
-    }
+	public String index_html(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map)
+			throws RequiresHttpAction {
+		final WebContext context = new J2EContext(request, response);
+		map.put("profile", getStringProfile(context));
+		return "index";
+	}
+
 	@RequestMapping("/saml/index.html")
 	public String saml(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map) {
 		return protectedIndex(request, response, map);
 	}
+
 	@RequestMapping("/google/index.html")
 	public String google(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map) {
 		return protectedIndex(request, response, map);
 	}
+
 	@RequestMapping("/steam/index.html")
 	public String steam(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map) {
 		return protectedIndex(request, response, map);
 	}
 
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
+
 	@RequestMapping("/users")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public String users(){
+	public String users() {
 		return "userlist";
 	}
 

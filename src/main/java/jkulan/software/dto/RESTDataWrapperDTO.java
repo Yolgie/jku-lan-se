@@ -8,6 +8,8 @@ public class RESTDataWrapperDTO<T extends Serializable> {
 
     private String errorDetails;
 
+    private boolean success;
+
     public RESTDataWrapperDTO() {
     }
 
@@ -15,8 +17,6 @@ public class RESTDataWrapperDTO<T extends Serializable> {
         this.data = data;
         this.success = success;
     }
-
-    private boolean success;
 
     public boolean isSuccess() {
         return success;

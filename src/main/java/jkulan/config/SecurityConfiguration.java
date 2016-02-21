@@ -113,11 +113,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return prov;
 	}
 
-//	@Bean
-//	public SessionFixationProtectionStrategy sas() {
-//		return new SessionFixationProtectionStrategy();
-//	}
-
 	@Bean
 	public MyAuthenticationSuccessHandler myAuthenticationSuccessHandler() {
 		return new MyAuthenticationSuccessHandler();

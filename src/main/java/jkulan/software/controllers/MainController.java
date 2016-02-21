@@ -13,7 +13,6 @@ import org.pac4j.core.profile.UserProfile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import jkulan.software.model.User;
 
@@ -56,7 +55,7 @@ public class MainController {
 	}
 
 	@RequestMapping("/users")
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('USER')")
 	public String users() {
 		return "userlist";
 	}

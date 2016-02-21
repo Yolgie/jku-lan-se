@@ -1,8 +1,5 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.security.PermitAll;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,6 @@ import at.jku.oeh.lan.laganizer.model.UserDAO;
 
 @RestController
 @RequestMapping("/teams/")
-@PermitAll
 public class TeamController {
 
     @Autowired
@@ -44,13 +40,12 @@ public class TeamController {
         	team.addPlayer(user);
         	
         	Tournament t = tournamentDao.findOne(tournamentId);
-//        	if(t != null){
-        	//FIXME
+        	if(t != null){
         		team.setTournament(t);
 
             	teamDao.save(team);
             	result.setSuccess(true);
-//        	}
+        	}
     	}
     	
     	result.setData(team);

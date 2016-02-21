@@ -23,7 +23,7 @@ public class Team implements Serializable{
 	@ManyToMany(mappedBy = "Team.players")
 	private Set<User> players;
 	
-//	@NotNull
+	@NotNull
 	@ManyToOne
 	private Tournament tournament;
 	

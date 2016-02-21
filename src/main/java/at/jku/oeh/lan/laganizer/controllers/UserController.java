@@ -12,7 +12,6 @@ import javax.annotation.security.PermitAll;
 
 @RestController
 @RequestMapping("/users/")
-@PermitAll
 public class UserController {
 
     @Autowired

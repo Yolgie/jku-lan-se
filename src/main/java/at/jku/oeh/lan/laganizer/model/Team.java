@@ -1,11 +1,15 @@
 package at.jku.oeh.lan.laganizer.model;
 
 import java.io.Serializable;
+
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -16,6 +20,8 @@ public class Team implements Serializable{
 	private long id;
 	
 	@NotNull
+	@ElementCollection
+	@CollectionTable(name = "team_players", joinColumns = @JoinColumn(name = "id"))
 	private List<User> players;
 	
 	@NotNull

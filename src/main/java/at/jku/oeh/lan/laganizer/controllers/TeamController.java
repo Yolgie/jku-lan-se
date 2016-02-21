@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
 import at.jku.oeh.lan.laganizer.model.Team;
 import at.jku.oeh.lan.laganizer.model.TeamDAO;
+import at.jku.oeh.lan.laganizer.model.Tournament;
 import at.jku.oeh.lan.laganizer.model.TournamentDAO;
 import at.jku.oeh.lan.laganizer.model.User;
 import at.jku.oeh.lan.laganizer.model.UserDAO;
@@ -31,16 +32,29 @@ public class TeamController {
     public RESTDataWrapperDTO<Team> create(@RequestParam long userId, @RequestParam long tournamentId){
     	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
     	Team team = new Team();
-    	team.setName(userDao.findOne(userId).getName());
     	
-    	List<User> players = new ArrayList<>();
-    	players.add(userDao.findOne(userId));
-    	team.setPlayers(players);
-    	team.setTournament(tournamentDao.findOne(tournamentId));
-    	teamDao.save(team);
+    	User user = userDao.findOne(userId);
+    	if(user != null){
+        	team.setName(user.getName());
+        	
+        	List<User> players = new ArrayList<>();
+        	players.add(user);
+        	team.setPlayers(players);
+        	
+        	Tournament t = tournamentDao.findOne(tournamentId);
+        	if(t != null){
+        		team.setTournament(t);
+
+            	teamDao.save(team);
+            	result.setSuccess(true);	
+        	}else{
+        		result.setSuccess(false);
+        	}
+    	}else{
+    		result.setSuccess(false);
+    	}
     	
     	result.setData(team);
-    	result.setSuccess(true);
     	
     	return result;
     }
@@ -49,13 +63,19 @@ public class TeamController {
     public RESTDataWrapperDTO<Team> addPlayer(@RequestParam long id, @RequestParam long userId){
     	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
     	Team team = teamDao.findOne(id);
-    	List<User> players = team.getPlayers();
-    	
-    	players.add(userDao.findOne(userId));
-    	team.setPlayers(players);
-    	
     	result.setData(team);
-    	result.setSuccess(true);
+    	
+    	if(team == null){
+    		result.setSuccess(false);
+    	}else{
+        	result.setSuccess(true);
+        	List<User> players = team.getPlayers();
+        	User user;
+        	if((user = userDao.findOne(userId)) != null){
+        		players.remove(user);
+        	}
+        	team.setPlayers(players);
+    	}
     	
     	return result;
     }
@@ -64,17 +84,24 @@ public class TeamController {
     public RESTDataWrapperDTO<Team> delPlayer(@RequestParam long id, @RequestParam long userId){
     	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
     	Team team = teamDao.findOne(id);
-    	List<User> players = team.getPlayers();
-    	
-    	players.remove(userDao.findOne(userId));
-    	team.setPlayers(players);
-    	
-    	if(players.size() <= 0){
-    		teamDao.delete(id);
-    	}
-    	
     	result.setData(team);
-    	result.setSuccess(true);
+    	
+    	if(team == null){
+    		result.setSuccess(false);
+    	}else{
+        	result.setSuccess(true);
+        	List<User> players = team.getPlayers();
+        	
+        	User user;
+        	if((user = userDao.findOne(userId)) != null){
+        		players.remove(user);
+        	}
+        	team.setPlayers(players);
+        	
+        	if(players.size() <= 0){
+        		teamDao.delete(id);
+        	}
+    	}
     	
     	return result;
     }
@@ -83,11 +110,29 @@ public class TeamController {
     public RESTDataWrapperDTO<Team> changeName(@RequestParam long id, @RequestParam String name){
     	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
     	Team team = teamDao.findOne(id);
-    	team.setName(name);
     	
     	result.setData(team);
-    	result.setSuccess(true);
     	
+    	if(team == null){
+    		result.setSuccess(false);
+    	}else{
+        	team.setName(name);
+        	result.setSuccess(true);	
+    	}
+    	return result;
+    }
+    
+    @RequestMapping(value = "find", method = RequestMethod.GET)
+    public RESTDataWrapperDTO<Team> getTeam(@RequestParam long id){
+    	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
+    	Team team = teamDao.findOne(id);
+    	
+    	result.setData(team);
+    	if(team == null){
+    		result.setSuccess(false);
+    	}else{
+        	result.setSuccess(true);	
+    	}
     	return result;
     }
 }

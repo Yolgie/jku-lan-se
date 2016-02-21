@@ -4,8 +4,8 @@ import at.jku.oeh.lan.laganizer.model.actionlog.EventLog;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Entity
@@ -22,10 +22,10 @@ public class Event {
 
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
-    private Calendar startTime;
+    private Instant startTime;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Calendar endTime;
+    private Instant endTime;
 
     private String description;
 
@@ -46,10 +46,6 @@ public class Event {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -66,19 +62,19 @@ public class Event {
         this.eventManager = eventManager;
     }
 
-    public Calendar getStartTime() {
+    public Instant getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Calendar startTime) {
+    public void setStartTime(Instant startTime) {
         this.startTime = startTime;
     }
 
-    public Calendar getEndTime() {
+    public Instant getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Calendar endTime) {
+    public void setEndTime(Instant endTime) {
         this.endTime = endTime;
     }
 
@@ -116,10 +112,6 @@ public class Event {
 
     public List<EventLog> getEventLog() {
         return eventLog;
-    }
-
-    public void setEventLog(List<EventLog> eventLog) {
-        this.eventLog = eventLog;
     }
 
     public void addEventLogEntry(EventLog eventLog) {

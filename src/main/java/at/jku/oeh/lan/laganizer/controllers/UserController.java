@@ -1,14 +1,13 @@
-package jkulan.software.controllers;
+package at.jku.oeh.lan.laganizer.controllers;
 
-import jkulan.software.dto.RESTDataWrapperDTO;
-import jkulan.software.model.User;
-import jkulan.software.model.UserDAO;
+import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
+import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Serializable;
-
 import javax.annotation.security.PermitAll;
+import java.io.Serializable;
 
 @RestController
 @PermitAll
@@ -20,7 +19,7 @@ public class UserController {
 
     @RequestMapping(value = "search", method = RequestMethod.GET)
     public RESTDataWrapperDTO<User> search(@RequestParam String name) {
-    	return new RESTDataWrapperDTO<User>(userDao.findUserByName(name), true);
+        return new RESTDataWrapperDTO<User>(userDao.findUserByName(name), true);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)

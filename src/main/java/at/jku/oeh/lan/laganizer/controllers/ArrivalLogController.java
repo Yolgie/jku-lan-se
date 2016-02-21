@@ -1,10 +1,10 @@
-package jkulan.software.controllers;
+package at.jku.oeh.lan.laganizer.controllers;
 
-import jkulan.software.dto.RESTDataWrapperDTO;
-import jkulan.software.model.ArrivalAction;
-import jkulan.software.model.ArrivalLog;
-import jkulan.software.model.ArrivalLogDAO;
-import jkulan.software.model.UserDAO;
+import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
+import at.jku.oeh.lan.laganizer.model.ArrivalAction;
+import at.jku.oeh.lan.laganizer.model.ArrivalLog;
+import at.jku.oeh.lan.laganizer.model.ArrivalLogDAO;
+import at.jku.oeh.lan.laganizer.model.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

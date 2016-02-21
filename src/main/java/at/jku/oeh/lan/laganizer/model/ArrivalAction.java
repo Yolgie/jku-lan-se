@@ -1,4 +1,4 @@
-package jkulan.software.model;
+package at.jku.oeh.lan.laganizer.model;
 
 public enum ArrivalAction {
     USER_ARRIVED,

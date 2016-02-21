@@ -1,8 +1,8 @@
-package jkulan.config;
+package at.jku.oeh.lan.laganizer.config;
 
-import jkulan.software.auth.MyAuthenticationSuccessHandler;
-import jkulan.software.auth.MyUserDetailsService;
-import jkulan.software.auth.SteamClient;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.pac4j.core.config.Config;
 import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.saml.client.SAML2Client;
@@ -23,8 +23,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import java.util.ArrayList;
-import java.util.List;
+import at.jku.oeh.lan.laganizer.auth.MyAuthenticationSuccessHandler;
+import at.jku.oeh.lan.laganizer.auth.MyUserDetailsService;
+import at.jku.oeh.lan.laganizer.auth.SteamClient;
 
 /**
  * Spring Security Main config.

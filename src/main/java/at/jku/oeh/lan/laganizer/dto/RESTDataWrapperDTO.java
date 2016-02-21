@@ -1,4 +1,4 @@
-package jkulan.software.dto;
+package at.jku.oeh.lan.laganizer.dto;
 
 import java.io.Serializable;
 

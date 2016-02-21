@@ -1,4 +1,4 @@
-package at.jku.oeh.lan.laganizer.model;
+package at.jku.oeh.lan.laganizer.model.actionlog;
 
 import org.springframework.data.repository.CrudRepository;
 

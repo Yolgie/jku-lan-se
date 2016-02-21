@@ -16,7 +16,7 @@ public class EventService {
 
     public void startEvent(Event event, User reporter) {
         EventLog eventLog = new EventLog();
-        eventLog.setReporter(reporter);
+        eventLog.setCreatedBy(reporter);
         eventLog.setAction(EventAction.STARTED);
         event.addEventLogEntry(eventLog);
         eventDAO.save(event);

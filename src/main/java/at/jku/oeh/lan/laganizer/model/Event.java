@@ -12,35 +12,34 @@ import java.util.List;
 public class Event {
     @Id
     @GeneratedValue
-    private long id;
+    protected long id;
 
     @NotNull
-    private String name;
+    protected String name;
 
     @NotNull
-    private User eventManager;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @NotNull
-    private Instant startTime;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Instant endTime;
-
-    private String description;
+    @ManyToOne
+    protected User eventManager;
 
     @NotNull
-    private boolean enabled = false;
+    protected Instant startTime;
+
+    protected Instant endTime;
+
+    protected String description;
 
     @NotNull
-    private boolean started = false;
+    protected boolean enabled = false;
 
     @NotNull
-    private boolean finished = false;
+    protected boolean started = false;
+
+    @NotNull
+    protected boolean finished = false;
 
     @OneToMany
     @NotNull
-    private List<EventLog> eventLog = new ArrayList<>();
+    protected List<EventLog> eventLog = new ArrayList<>();
 
     public long getId() {
         return id;

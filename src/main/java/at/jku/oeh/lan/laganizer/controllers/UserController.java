@@ -73,4 +73,5 @@ public class UserController {
     public RESTDataWrapperDTO list() {
         return new RESTDataWrapperDTO<>((Serializable) userDao.findAll(), true);
     }
+
 }

@@ -1,9 +1,10 @@
 package jkulan.software.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.Calendar;
 
 @Entity
 public class ArrivalLog implements Serializable {
@@ -12,14 +13,18 @@ public class ArrivalLog implements Serializable {
     @GeneratedValue
     private long id;
 
+    @NotNull
     @ManyToOne
     private User user;
 
+    @NotNull
     private ArrivalAction action;
 
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
+    private Calendar timestamp;
 
+    @NotNull
     @ManyToOne
     private User reporter;
 
@@ -49,11 +54,11 @@ public class ArrivalLog implements Serializable {
         this.action = action;
     }
 
-    public Date getTimestamp() {
+    public Calendar getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Calendar timestamp) {
         this.timestamp = timestamp;
     }
 

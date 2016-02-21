@@ -1,5 +1,10 @@
 package jkulan.software.controllers;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.RequiresHttpAction;
@@ -8,11 +13,8 @@ import org.pac4j.core.profile.UserProfile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import jkulan.software.model.User;
 
 @Controller
 public class MainController {
@@ -28,6 +30,7 @@ public class MainController {
 			throws RequiresHttpAction {
 		final WebContext context = new J2EContext(request, response);
 		map.put("profile", getStringProfile(context));
+		map.put("user", getCurrentUserString(context));
 		return "index";
 	}
 
@@ -61,6 +64,11 @@ public class MainController {
 		@SuppressWarnings("rawtypes")
 		final ProfileManager manager = new ProfileManager(context);
 		return manager.get(true);
+	}
+
+	private String getCurrentUserString(WebContext context) {
+		User user = (User) context.getSessionAttribute("user");
+		return user == null ? "" : user.toString();
 	}
 
 	private String getStringProfile(WebContext context) {

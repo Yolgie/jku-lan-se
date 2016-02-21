@@ -56,6 +56,7 @@ public class Pac4JConfiguration {
 		final OidcClient oidcClient = new OidcClient();
 		oidcClient.setPreferredJwsAlgorithm(JWSAlgorithm.PS384);
         oidcClient.addCustomParam("prompt", "consent");
+		oidcClient.setName("googleClient");
 		return oidcClient;
 	}
 	

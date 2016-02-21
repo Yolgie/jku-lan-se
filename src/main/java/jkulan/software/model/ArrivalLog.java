@@ -8,7 +8,6 @@ import java.util.Calendar;
 
 @Entity
 public class ArrivalLog implements Serializable {
-
     @Id
     @GeneratedValue
     private long id;

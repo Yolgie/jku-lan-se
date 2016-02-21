@@ -41,8 +41,8 @@ logging:
     level:
         org.hibernate:                      ERROR
         jkulan:                             TRACE
-        org.pac4j.springframework.security.web: TRACE
-        org.springframework.security: TRACE
+        org.pac4j.springframework.security.web: DEBUG
+        org.springframework.security: DEBUG
 saml:
     keystorePath:                           resource:/saml/samlKeystore.jks
     keystorePassword:                       jku123
@@ -52,11 +52,11 @@ saml:
     identityProviderMetadataPath:           http://eduid.at/md/aconet-registered.xml
     serviceProviderMetadataPath:            /tmp/sp-metadata.xml
     forceServiceProviderMetadataGeneration: true
-#    adminRoleRegexp:                ^https://lan[.]oeh[.]jku[.]at/admin$
+    adminRoleRegexp:                        ^https://lan[.]oeh[.]jku[.]at/admin$
 
 google:
-    clientID:                   clientID 
-    secret:                     secret 
+    clientID:                   googleClientId
+    secret:                     secret
     discoveryURI:               https://accounts.google.com/.well-known/openid-configuration
 
 # ===============================

@@ -1,9 +1,11 @@
 package at.jku.oeh.lan.laganizer.model;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.List;
+import java.util.LinkedList;
 
 @Entity
 public class Clan implements Serializable {
@@ -11,13 +13,16 @@ public class Clan implements Serializable {
     @GeneratedValue
     private long id;
 
-    @UniqueConstraint()
+    @Column(name = "name", unique = true)
     private String name;
 
-    private Set<User> members;
+    @ManyToOne
+    @CollectionTable
+    @NotEmpty
+    private List<User> members;
 
     public Clan() {
-        members = new HashSet<>();
+        members = new LinkedList<User>();
     }
 
     public long getId() {
@@ -36,11 +41,37 @@ public class Clan implements Serializable {
         this.name = name;
     }
 
-    public Set<User> getMembers() {
+    public int countMembers() {
+        return members.size();
+    }
+
+    public List<User> getMembers() {
         return members;
     }
 
-    public void setMembers(HashSet<User> members) {
+    public void setMembers(List<User> members) {
         this.members = members;
+    }
+
+    public void addUser(User user) {
+        if (user != null) {
+            members.add(user);
+        }
+    }
+
+    public void removeUser(User user) {
+        if (user != null) {
+            members.remove(user);
+        }
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Group: " + name);
+        sb.append("Members: (" + members.size() + ")");
+        for (User user : members) {
+            sb.append("\n\t" + user);
+        }
+        return sb.toString();
     }
 }

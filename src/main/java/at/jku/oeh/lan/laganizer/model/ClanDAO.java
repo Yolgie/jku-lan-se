@@ -7,10 +7,10 @@ import javax.transaction.Transactional;
 
 @Component
 @Transactional
-public interface ClanDAO extends CrudRepository<User, Long> {
-    User[] findUsersByClan(String cid);
-
-    Clan findClanByUser(String uuid);
+public interface ClanDAO extends CrudRepository<Clan, Long> {
+    Clan findClanByUser(User user);
 
     Clan findClanByName(String name);
+
+    Clan findClanByClanID(long id);
 }

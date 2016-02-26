@@ -14,10 +14,6 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @Column(length = 80, nullable = false)
     private String uuid;
 
-    @ManyToMany
-    @ElementCollection
-    private Set<Team> teams;
-
     @NotNull
     private String name;
 
@@ -34,6 +30,14 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
+
+    @NotNull
+    @ManyToOne
+    private Clan clan;
+
+    @ManyToMany
+    @ElementCollection
+    private Set<Team> teams;
 
     public User() {
         this.uuid = UUID.randomUUID().toString();
@@ -146,6 +150,14 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Clan getClan() {
+        return clan;
+    }
+
+    public void setClan(Clan clan) {
+        this.clan = clan;
     }
 
     public String toString() {

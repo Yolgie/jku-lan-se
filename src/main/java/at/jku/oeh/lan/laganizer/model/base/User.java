@@ -1,6 +1,7 @@
 package at.jku.oeh.lan.laganizer.model.base;
 
 import at.jku.oeh.lan.laganizer.model.BaseEntity;
+import at.jku.oeh.lan.laganizer.model.Clan;
 import at.jku.oeh.lan.laganizer.model.events.tournament.team.Team;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,10 +21,6 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @NotNull
     private boolean active;
 
-    @ManyToMany
-    @ElementCollection
-    private Set<Team> teams;
-
     @NotNull
     private String name;
 
@@ -40,6 +37,14 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
+
+    @NotNull
+    @ManyToOne
+    private Clan clan;
+
+    @ManyToMany
+    @ElementCollection
+    private Set<Team> teams;
 
     public User() {
         this.uuid = UUID.randomUUID().toString();
@@ -130,6 +135,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     }
 
     /// Setter ///
+
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
@@ -160,6 +166,14 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+    public Clan getClan() {
+        return clan;
+    }
+
+    public void setClan(Clan clan) {
+        this.clan = clan;
     }
 
     public String toString() {

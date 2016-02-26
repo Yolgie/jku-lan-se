@@ -23,7 +23,6 @@ public class TeamController {
     @RequestMapping(value = "new", method = RequestMethod.POST)
     public RESTDataWrapperDTO<Team> create(@RequestParam long userId, @RequestParam long tournamentId) {
         RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
-
         try {
             result.setData(teamService.createTeam(userId, tournamentId));
             result.setSuccess(false);

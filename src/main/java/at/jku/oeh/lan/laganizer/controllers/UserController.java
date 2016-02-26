@@ -2,9 +2,12 @@ package at.jku.oeh.lan.laganizer.controllers;
 
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
 import at.jku.oeh.lan.laganizer.model.User;
-import at.jku.oeh.lan.laganizer.model.UserDAO;
+import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.security.PermitAll;
 
 import java.io.Serializable;
 

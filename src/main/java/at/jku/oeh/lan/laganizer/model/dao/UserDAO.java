@@ -1,14 +1,16 @@
-package at.jku.oeh.lan.laganizer.model;
+package at.jku.oeh.lan.laganizer.model.dao;
+
+import javax.transaction.Transactional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import at.jku.oeh.lan.laganizer.model.User;
 
 @Component
 @Transactional
 public interface UserDAO extends CrudRepository<User, Long> {
-    User findBySteamId(String steamId);
+    User findBySteamId(long steamId);
 
     User findByGoogleId(String googleId);
 

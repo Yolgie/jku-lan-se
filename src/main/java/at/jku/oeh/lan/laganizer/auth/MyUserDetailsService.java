@@ -1,7 +1,8 @@
 package at.jku.oeh.lan.laganizer.auth;
 
 import at.jku.oeh.lan.laganizer.model.User;
-import at.jku.oeh.lan.laganizer.model.UserDAO;
+import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opensaml.core.xml.XMLObject;
@@ -18,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

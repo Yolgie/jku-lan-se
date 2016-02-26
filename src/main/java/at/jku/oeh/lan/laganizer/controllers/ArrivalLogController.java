@@ -1,10 +1,11 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
-import at.jku.oeh.lan.laganizer.model.UserDAO;
-import at.jku.oeh.lan.laganizer.model.actionlog.ArrivalAction;
-import at.jku.oeh.lan.laganizer.model.actionlog.ArrivalLog;
-import at.jku.oeh.lan.laganizer.model.actionlog.ArrivalLogDAO;
+import at.jku.oeh.lan.laganizer.model.ArrivalAction;
+import at.jku.oeh.lan.laganizer.model.ArrivalLog;
+import at.jku.oeh.lan.laganizer.model.dao.ArrivalLogDAO;
+import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.PermitAll;
+
 import java.io.Serializable;
 
 @RestController

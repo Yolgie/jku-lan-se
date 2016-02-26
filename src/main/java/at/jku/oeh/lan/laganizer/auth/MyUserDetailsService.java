@@ -63,7 +63,7 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
         if (user == null) {
             user = new User();
             user.setSteamId(profile.steamId);
-            user.setName(profile.steamId);
+            user.setName(Long.toString(profile.steamId));
             user.getRoles().add("USER");
             userDAO.save(user);
         }

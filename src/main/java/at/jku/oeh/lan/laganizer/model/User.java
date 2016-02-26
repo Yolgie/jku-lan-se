@@ -1,13 +1,23 @@
 package at.jku.oeh.lan.laganizer.model;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.*;
 
 @Entity
 public class User extends BaseEntity implements UserDetails, Serializable {
@@ -23,8 +33,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     private String email;
 
-    @Column(length = 80, nullable = true)
-    private String steamId;
+    private long steamId;
 
     @Column(length = 80, nullable = true)
     private String googleId;
@@ -116,11 +125,11 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         this.roles = roles;
     }
 
-    public String getSteamId() {
+    public long getSteamId() {
         return steamId;
     }
 
-    public void setSteamId(String steamId) {
+    public void setSteamId(long steamId) {
         this.steamId = steamId;
     }
 

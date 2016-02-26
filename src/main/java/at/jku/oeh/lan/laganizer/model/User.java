@@ -34,6 +34,8 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     private String email;
 
     private long steamId;
+    private boolean steamVisible;
+    private String steamAvatarUrl;
 
     @Column(length = 80, nullable = true)
     private String googleId;
@@ -160,4 +162,24 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     public String toString() {
         return "User: " + getName() + " with E-Mail: " + getEmail() + " and Roles: " + roles.toString();
     }
+
+
+	public boolean isSteamVisible() {
+		return steamVisible;
+	}
+
+
+	public void setSteamVisible(boolean steamVisible) {
+		this.steamVisible = steamVisible;
+	}
+
+
+	public String getSteamAvatarUrl() {
+		return steamAvatarUrl;
+	}
+
+
+	public void setSteamAvatarUrl(String steamAvatarUrl) {
+		this.steamAvatarUrl = steamAvatarUrl;
+	}
 }

@@ -40,7 +40,7 @@ spring:
 logging:
     level:
         org.hibernate:                      ERROR
-        jkulan:                             TRACE
+        at.jku.oeh.lan:                     TRACE
         org.pac4j.springframework.security.web: DEBUG
         org.springframework.security: DEBUG
 saml:
@@ -58,6 +58,9 @@ google:
     clientID:                   googleClientId
     secret:                     secret
     discoveryURI:               https://accounts.google.com/.well-known/openid-configuration
+
+steam:
+    apiKey:                     dummy
 
 # ===============================
 # = Application

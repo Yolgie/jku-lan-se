@@ -9,7 +9,7 @@ import at.jku.oeh.lan.laganizer.model.User;
 
 @Component
 @Transactional
-public interface UserDAO extends CrudRepository<User, Long> {
+public interface UserDAO extends CrudRepository<User, Long>,SteamUserDAO {
     User findBySteamId(long steamId);
 
     User findByGoogleId(String googleId);

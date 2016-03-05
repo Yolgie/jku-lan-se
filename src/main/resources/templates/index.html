@@ -5,8 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+
     <script type="text/javascript" th:src="@{/webjars/angular/1.2.28/angular.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/angular-resource/1.2.28/angular-resource.js}"></script>
+    <script type="test/javascript" th:src="@{/webjars/angular-resource/1.2.28/angular-resource.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/lodash/2.4.1/lodash.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/restangular/1.5.1/restangular.js}"></script>-->
+
+
+
 </head>
 <body ng-controller="UserCtrl">
 <div th:replace="bars :: header"></div>
@@ -23,20 +29,19 @@
         <p th:text="${user}">No User</p>
         <a href="/logout">Logout</a>
     <p ng-show="user">Du bist im Moment Nutzer: {{firstName}}</p>
-    <p>Das ist mein TestOutput: {{userList}}</p>
-    <p ng-show="users">Das sind die aktuellen Nutzer {{users}}</p>
+    <p ng-show="users">Das sind alle aktuelle existierenden Nutzer {{users}}</p>
+    <p ng-show="currentUser"> Im Moment bist du als Nutzer {{currentUser.name}} angemeldet</p>
 
-    <div ng-repeat="u in users.data">
-        <label> Input {{u.name}}</label>
-        <input ng-change="updateUser(u.name)" ng-model="u.name" type="test"/>
-    </div>
+
+    <input ng-model="currentUser.name">{{currentUser.name}}</input>
+    <button ng-click="updateUser()"> Update Name</button>
 
     <p>Angular {{'funktioniert' + '!'}}</p>
 </div>
 
 <div th:replace="bars :: footer"></div>
 <script th:src="@{/js/app.js}"></script>
-<script th:src="@{/js/services.js}"></script>
+<!--<script th:src="@{/js/services.js}"></script>-->
 <script th:src="@{/js/controllers.js}"></script>
 </body>
 </html>

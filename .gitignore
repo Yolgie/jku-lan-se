@@ -16,3 +16,4 @@ bin
 .settings
 target
 src/main/resources/saml
+application_priv.yml

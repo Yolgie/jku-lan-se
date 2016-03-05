@@ -39,6 +39,9 @@ dependencies {
         exclude module: 'spring-security-config'
     }
 
+    compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
+    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+
 
     compile group: 'org.pac4j', name: 'pac4j-core', version:'1.8.6'
     compile group: 'org.pac4j', name: 'pac4j-saml', version:'1.8.6'
@@ -53,6 +56,9 @@ dependencies {
     compile("net.sourceforge.nekohtml:nekohtml:1.9.22")
 
     compile 'org.webjars.bower:angular-resource:1.2.28'
+    compile ('org.webjars:restangular:1.5.1') {
+        exclude module: 'angularjs'
+    }
 
 }
 

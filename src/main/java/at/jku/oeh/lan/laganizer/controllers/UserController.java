@@ -1,13 +1,19 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
+import at.jku.oeh.lan.laganizer.dto.UserDTO;
 import at.jku.oeh.lan.laganizer.model.User;
 import at.jku.oeh.lan.laganizer.model.UserDAO;
+import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @PermitAll
@@ -37,6 +43,15 @@ public class UserController {
         result.setData(user);
         result.setSuccess(true);
         return result;
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @RequestMapping(value = "update/{id}", method = RequestMethod.POST)
+    public void updateByJSON(@RequestBody UserDTO userJson) {
+        User user = userDao.findById(userJson.getId());
+        user.setName(userJson.getName());
+        user.setEmail(userJson.getEmail());
+        userDao.save(user);
     }
 
     @RequestMapping(value = "new", method = RequestMethod.POST)
@@ -69,9 +84,25 @@ public class UserController {
         return result;
     }
 
+    @RequestMapping(value= "current", method = RequestMethod.GET)
+    public @ResponseBody UserDTO currentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth instanceof  ClientAuthenticationToken) {
+            ClientAuthenticationToken token = (ClientAuthenticationToken) auth;
+            User u = (User) token.getUserDetails();
+            return new UserDTO(u);
+        }
+        return null;
+    }
+
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public RESTDataWrapperDTO list() {
-        return new RESTDataWrapperDTO<>((Serializable) userDao.findAll(), true);
+    public @ResponseBody List<UserDTO> list() {
+        Iterable<User> users = userDao.findAll();
+        List<UserDTO> userDtos = new ArrayList<>();
+        for(User u: users) {
+            userDtos.add(new UserDTO(u));
+        }
+        return userDtos;
     }
 
 }

@@ -75,7 +75,7 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
             user = new User();
             user.setGoogleId(profile.getId());
             user.setEmail(profile.getEmail());
-            user.setName(profile.getUsername());
+            user.setName((String)profile.getAttributes().get("name"));
             user.getRoles().add("USER");
             userDAO.save(user);
         }

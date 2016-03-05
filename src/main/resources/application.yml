@@ -1,0 +1,66 @@
+security:
+    basic:
+        enabled: false
+spring:
+    datasource:
+#        url:                            jdbc:h2:file:/tmp/jku-lan-se_user;FILE_LOCK=FS;PAGE_SIZE=1024;CACHE_SIZE=8192
+        username:                       sa
+        password:                       sa
+        driverClassName:                org.h2.Driver
+# Keep the connection alive if idle for a long time (needed in production)
+#       testWhileIdle:                  true
+#       validationQuery:                SELECT 1
+
+# ===============================
+# = JPA / HIBERNATE
+# ===============================
+    jpa:
+# Use spring.jpa.properties.* for Hibernate native properties (the prefix is
+# stripped before adding them to the entity manager).
+# Allows Hibernate to generate SQL optimized for a particular DBMS
+#       dialect:            org.hibernate.dialect.PostgreSQLDialect
+        database-platform:              org.hibernate.dialect.H2Dialect
+# Show or not log for each sql query
+        show-sql:                       true
+# Hibernate ddl auto (create, create-drop, update): with "update" the database
+# schema will be automatically updated accordingly to java entities found in
+# the project
+        hibernate:
+            ddl-auto:                   update
+# Naming strategy
+            naming-strategy:            org.hibernate.cfg.ImprovedNamingStrategy
+
+    aop:
+        proxy-target-class: true
+# ===============================
+# = Logging
+# ===============================
+
+
+logging:
+    level:
+        org.hibernate:                      ERROR
+        jkulan:                             TRACE
+        org.pac4j.springframework.security.web: DEBUG
+        org.springframework.security: DEBUG
+saml:
+    keystorePath:                           resource:/saml/samlKeystore.jks
+    keystorePassword:                       jku123
+    privateKeyPassword:                     jku123
+    serviceProviderEntityId:                urn:oeh:jku:lan:sp
+    identityProviderEntityId:               https://shibboletht.im.jku.at/idp/shibboleth
+    identityProviderMetadataPath:           http://eduid.at/md/aconet-registered.xml
+    serviceProviderMetadataPath:            /tmp/sp-metadata.xml
+    forceServiceProviderMetadataGeneration: true
+    adminRoleRegexp:                        ^https://lan[.]oeh[.]jku[.]at/admin$
+
+google:
+    clientID:                   googleClientId
+    secret:                     secret
+    discoveryURI:               https://accounts.google.com/.well-known/openid-configuration
+
+# ===============================
+# = Application
+# ===============================
+application:
+    url:                            /

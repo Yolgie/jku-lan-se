@@ -18,6 +18,11 @@ public class RESTDataWrapperDTO<T extends Serializable> {
         this.success = success;
     }
 
+    public RESTDataWrapperDTO(String errorDetails, boolean success) {
+        this.errorDetails = errorDetails;
+        this.success = success;
+    }
+
     public boolean isSuccess() {
         return success;
     }

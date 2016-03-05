@@ -1,7 +1,5 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
-import javax.annotation.security.PermitAll;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -9,12 +7,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
-import at.jku.oeh.lan.laganizer.model.Team;
-import at.jku.oeh.lan.laganizer.model.TeamDAO;
-import at.jku.oeh.lan.laganizer.model.Tournament;
-import at.jku.oeh.lan.laganizer.model.TournamentDAO;
-import at.jku.oeh.lan.laganizer.model.User;
-import at.jku.oeh.lan.laganizer.model.UserDAO;
+import at.jku.oeh.lan.laganizer.model.events.Team;
+import at.jku.oeh.lan.laganizer.model.events.TeamDAO;
+import at.jku.oeh.lan.laganizer.model.events.Tournament;
+import at.jku.oeh.lan.laganizer.model.events.TournamentDAO;
+import at.jku.oeh.lan.laganizer.model.base.User;
+import at.jku.oeh.lan.laganizer.model.base.UserDAO;
 
 @RestController
 @RequestMapping("/teams/")

@@ -1,12 +1,12 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
-import at.jku.oeh.lan.laganizer.model.Tournament;
-import at.jku.oeh.lan.laganizer.model.TournamentDAO;
-import at.jku.oeh.lan.laganizer.model.User;
-import at.jku.oeh.lan.laganizer.model.UserDAO;
-import at.jku.oeh.lan.laganizer.services.EventService;
-import at.jku.oeh.lan.laganizer.services.TimeService;
+import at.jku.oeh.lan.laganizer.model.events.Tournament;
+import at.jku.oeh.lan.laganizer.model.events.TournamentDAO;
+import at.jku.oeh.lan.laganizer.model.base.User;
+import at.jku.oeh.lan.laganizer.model.base.UserDAO;
+import at.jku.oeh.lan.laganizer.model.events.EventService;
+import at.jku.oeh.lan.laganizer.model.events.TimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

@@ -1,6 +1,6 @@
 package at.jku.oeh.lan.laganizer.model.actionlog;
 
-import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.base.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

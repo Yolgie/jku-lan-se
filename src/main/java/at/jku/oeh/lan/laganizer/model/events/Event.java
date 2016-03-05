@@ -1,6 +1,7 @@
-package at.jku.oeh.lan.laganizer.model;
+package at.jku.oeh.lan.laganizer.model.events;
 
 import at.jku.oeh.lan.laganizer.model.actionlog.EventLog;
+import at.jku.oeh.lan.laganizer.model.base.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

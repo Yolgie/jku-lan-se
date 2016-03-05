@@ -1,8 +1,8 @@
-package at.jku.oeh.lan.laganizer.services;
+package at.jku.oeh.lan.laganizer.model.events;
 
-import at.jku.oeh.lan.laganizer.model.Event;
-import at.jku.oeh.lan.laganizer.model.EventDAO;
-import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.events.Event;
+import at.jku.oeh.lan.laganizer.model.events.EventDAO;
+import at.jku.oeh.lan.laganizer.model.base.User;
 import at.jku.oeh.lan.laganizer.model.actionlog.EventAction;
 import at.jku.oeh.lan.laganizer.model.actionlog.EventLog;
 import org.springframework.beans.factory.annotation.Autowired;

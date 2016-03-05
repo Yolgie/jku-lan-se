@@ -1,4 +1,4 @@
-package at.jku.oeh.lan.laganizer.model;
+package at.jku.oeh.lan.laganizer.model.base;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
@@ -15,4 +15,6 @@ public interface UserDAO extends CrudRepository<User, Long> {
     User findBySaml2Id(String saml2Id);
 
     User findUserByName(String name);
+
+    User findUserById(long id);
 }

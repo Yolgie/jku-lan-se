@@ -1,6 +1,6 @@
 package at.jku.oeh.lan.laganizer.auth;
 
-import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.base.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pac4j.core.context.Pac4jConstants;

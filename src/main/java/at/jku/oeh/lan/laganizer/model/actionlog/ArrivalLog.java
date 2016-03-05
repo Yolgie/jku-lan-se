@@ -1,6 +1,6 @@
 package at.jku.oeh.lan.laganizer.model.actionlog;
 
-import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.base.User;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;

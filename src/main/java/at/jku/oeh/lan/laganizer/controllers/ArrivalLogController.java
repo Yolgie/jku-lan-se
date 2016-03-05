@@ -1,7 +1,7 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
-import at.jku.oeh.lan.laganizer.model.UserDAO;
+import at.jku.oeh.lan.laganizer.model.base.UserDAO;
 import at.jku.oeh.lan.laganizer.model.actionlog.ArrivalAction;
 import at.jku.oeh.lan.laganizer.model.actionlog.ArrivalLog;
 import at.jku.oeh.lan.laganizer.model.actionlog.ArrivalLogDAO;

@@ -1,6 +1,6 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
-import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.base.User;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.RequiresHttpAction;

@@ -1,4 +1,6 @@
-package at.jku.oeh.lan.laganizer.model;
+package at.jku.oeh.lan.laganizer.model.events;
+
+import at.jku.oeh.lan.laganizer.model.base.User;
 
 import java.io.Serializable;
 import java.util.HashSet;

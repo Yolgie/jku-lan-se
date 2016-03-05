@@ -1,4 +1,4 @@
-package at.jku.oeh.lan.laganizer.services;
+package at.jku.oeh.lan.laganizer.model.events;
 
 import org.springframework.stereotype.Service;
 

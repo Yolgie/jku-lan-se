@@ -1,16 +1,17 @@
 package at.jku.oeh.lan.laganizer.model.dao.impl;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.jku.oeh.lan.laganizer.model.User;
 import at.jku.oeh.lan.laganizer.model.dao.SteamUserDAO;
-import at.jku.oeh.lan.laganizer.model.dao.TransactionalConsumer;
 
 @Service
 public class UserDAOImpl implements SteamUserDAO {
@@ -29,7 +30,8 @@ public class UserDAOImpl implements SteamUserDAO {
     }
 	
 	@Override
-	public void iterateOverSteamUsers(TransactionalConsumer<List<User>> action) {
+	@Transactional
+	public void iterateOverSteamUsers(Consumer<List<User>> action) {
 		int offset = 0;
 
 	    List<User> users;

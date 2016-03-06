@@ -39,10 +39,11 @@ spring:
 
 logging:
     level:
-        org.hibernate:                      ERROR
-        at.jku.oeh.lan:                     TRACE
+        org.hibernate:                          ERROR
+        at.jku.oeh.lan:                         TRACE
         org.pac4j.springframework.security.web: DEBUG
-        org.springframework.security: DEBUG
+        org.springframework.security:           DEBUG
+        org.springframework.transaction:        DEBUG
 saml:
     keystorePath:                           resource:/saml/samlKeystore.jks
     keystorePassword:                       jku123

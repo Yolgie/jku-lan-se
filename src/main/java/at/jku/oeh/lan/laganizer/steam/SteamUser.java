@@ -22,34 +22,11 @@ public class SteamUser {
 	private String locCountryCode;
 	private String locStateCode;
 	private long locCityId;
+	private Long gameId;
+	private String gameExtraInfo;
+	private String gameServerIp;
 	
 	public SteamUser() {
-	}
-	
-	public SteamUser(long id, short communityVisibilityState,
-			short profileState, String personaName, Date lastLogOff,
-			String profileUrl, String avatarUrl, String avatarMediumUrl,
-			String avatarFullUrl, short personaState, String realName,
-			String primaryClanId, Date timeCreated, short personaStateFlags,
-			String locCountryCode, String locStateCode, long locCityId) {
-		super();
-		this.id = id;
-		this.communityVisibilityState = communityVisibilityState;
-		this.profileState = profileState;
-		this.personaName = personaName;
-		this.lastLogOff = lastLogOff;
-		this.profileUrl = profileUrl;
-		this.avatarUrl = avatarUrl;
-		this.avatarMediumUrl = avatarMediumUrl;
-		this.avatarFullUrl = avatarFullUrl;
-		this.personaState = personaState;
-		this.realName = realName;
-		this.primaryClanId = primaryClanId;
-		this.timeCreated = timeCreated;
-		this.personaStateFlags = personaStateFlags;
-		this.locCountryCode = locCountryCode;
-		this.locStateCode = locStateCode;
-		this.locCityId = locCityId;
 	}
 
 	public SteamUser(JSONObject player) {
@@ -69,22 +46,84 @@ public class SteamUser {
 		personaStateFlags = (short) player.getInt("personastateflags");
 		locCountryCode = player.getString("loccountrycode");
 		locStateCode = player.getString("locstatecode");
-		locCityId = (short) player.getInt("loccityid");
+		locCityId = player.getLong("loccityid");
+		if (player.has("gameid")) {
+			gameId = player.getLong("gameid");
+		}
+		if (player.has("gameextrainfo")) {
+			gameExtraInfo = player.getString("gameextrainfo");
+		}
+		if (player.has("gameserverip")) {
+			gameServerIp = player.getString("gameserverip");
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SteamUser other = (SteamUser) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	public SteamUser(long id, short communityVisibilityState, short profileState, String personaName, Date lastLogOff,
+			String profileUrl, String avatarUrl, String avatarMediumUrl, String avatarFullUrl, short personaState,
+			String realName, String primaryClanId, Date timeCreated, short personaStateFlags, String locCountryCode,
+			String locStateCode, long locCityId, Long gameId, String gameExtraInfo, String gameServerIp) {
+		super();
+		this.id = id;
+		this.communityVisibilityState = communityVisibilityState;
+		this.profileState = profileState;
+		this.personaName = personaName;
+		this.lastLogOff = lastLogOff;
+		this.profileUrl = profileUrl;
+		this.avatarUrl = avatarUrl;
+		this.avatarMediumUrl = avatarMediumUrl;
+		this.avatarFullUrl = avatarFullUrl;
+		this.personaState = personaState;
+		this.realName = realName;
+		this.primaryClanId = primaryClanId;
+		this.timeCreated = timeCreated;
+		this.personaStateFlags = personaStateFlags;
+		this.locCountryCode = locCountryCode;
+		this.locStateCode = locStateCode;
+		this.locCityId = locCityId;
+		this.gameId = gameId;
+		this.gameExtraInfo = gameExtraInfo;
+		this.gameServerIp = gameServerIp;
 	}
 
 	@Override
 	public String toString() {
-		return "SteamUser [id=" + id + ", communityVisibilityState="
-				+ communityVisibilityState + ", profileState=" + profileState
-				+ ", personaName=" + personaName + ", lastLogOff=" + lastLogOff
-				+ ", profileUrl=" + profileUrl + ", avatarUrl=" + avatarUrl
-				+ ", avatarMediumUrl=" + avatarMediumUrl + ", avatarFullUrl="
-				+ avatarFullUrl + ", personaState=" + personaState
-				+ ", realName=" + realName + ", primaryClanId=" + primaryClanId
-				+ ", timeCreated=" + timeCreated + ", personaStateFlags="
-				+ personaStateFlags + ", locCountryCode=" + locCountryCode
-				+ ", locStateCode=" + locStateCode + ", locCityId=" + locCityId
-				+ "]";
+		return "SteamUser [id=" + id + ", communityVisibilityState=" + communityVisibilityState + ", profileState="
+				+ profileState + ", " + (personaName != null ? "personaName=" + personaName + ", " : "")
+				+ (lastLogOff != null ? "lastLogOff=" + lastLogOff + ", " : "")
+				+ (profileUrl != null ? "profileUrl=" + profileUrl + ", " : "")
+				+ (avatarUrl != null ? "avatarUrl=" + avatarUrl + ", " : "")
+				+ (avatarMediumUrl != null ? "avatarMediumUrl=" + avatarMediumUrl + ", " : "")
+				+ (avatarFullUrl != null ? "avatarFullUrl=" + avatarFullUrl + ", " : "") + "personaState="
+				+ personaState + ", " + (realName != null ? "realName=" + realName + ", " : "")
+				+ (primaryClanId != null ? "primaryClanId=" + primaryClanId + ", " : "")
+				+ (timeCreated != null ? "timeCreated=" + timeCreated + ", " : "") + "personaStateFlags="
+				+ personaStateFlags + ", " + (locCountryCode != null ? "locCountryCode=" + locCountryCode + ", " : "")
+				+ (locStateCode != null ? "locStateCode=" + locStateCode + ", " : "") + "locCityId=" + locCityId + ", "
+				+ (gameId != null ? "gameId=" + gameId + ", " : "")
+				+ (gameExtraInfo != null ? "gameExtraInfo=" + gameExtraInfo + ", " : "")
+				+ (gameServerIp != null ? "gameServerIp=" + gameServerIp : "") + "]";
 	}
 
 	public long getId() {
@@ -105,6 +144,30 @@ public class SteamUser {
 
 	public short getProfileState() {
 		return profileState;
+	}
+	
+	public Long getGameId() {
+		return gameId;
+	}
+
+	public void setGameId(Long gameId) {
+		this.gameId = gameId;
+	}
+
+	public String getGameExtraInfo() {
+		return gameExtraInfo;
+	}
+
+	public void setGameExtraInfo(String gameExtraInfo) {
+		this.gameExtraInfo = gameExtraInfo;
+	}
+
+	public String getGameServerIp() {
+		return gameServerIp;
+	}
+
+	public void setGameServerIp(String gameServerIp) {
+		this.gameServerIp = gameServerIp;
 	}
 
 	public void setProfileState(short profileState) {
@@ -222,119 +285,4 @@ public class SteamUser {
 	public void setLocCityId(long locCityId) {
 		this.locCityId = locCityId;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((avatarFullUrl == null) ? 0 : avatarFullUrl.hashCode());
-		result = prime * result
-				+ ((avatarMediumUrl == null) ? 0 : avatarMediumUrl.hashCode());
-		result = prime * result
-				+ ((avatarUrl == null) ? 0 : avatarUrl.hashCode());
-		result = prime * result + communityVisibilityState;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result
-				+ ((lastLogOff == null) ? 0 : lastLogOff.hashCode());
-		result = prime * result + (int) (locCityId ^ (locCityId >>> 32));
-		result = prime * result
-				+ ((locCountryCode == null) ? 0 : locCountryCode.hashCode());
-		result = prime * result
-				+ ((locStateCode == null) ? 0 : locStateCode.hashCode());
-		result = prime * result
-				+ ((personaName == null) ? 0 : personaName.hashCode());
-		result = prime * result + personaState;
-		result = prime * result + personaStateFlags;
-		result = prime * result
-				+ ((primaryClanId == null) ? 0 : primaryClanId.hashCode());
-		result = prime * result + profileState;
-		result = prime * result
-				+ ((profileUrl == null) ? 0 : profileUrl.hashCode());
-		result = prime * result
-				+ ((realName == null) ? 0 : realName.hashCode());
-		result = prime * result
-				+ ((timeCreated == null) ? 0 : timeCreated.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SteamUser other = (SteamUser) obj;
-		if (avatarFullUrl == null) {
-			if (other.avatarFullUrl != null)
-				return false;
-		} else if (!avatarFullUrl.equals(other.avatarFullUrl))
-			return false;
-		if (avatarMediumUrl == null) {
-			if (other.avatarMediumUrl != null)
-				return false;
-		} else if (!avatarMediumUrl.equals(other.avatarMediumUrl))
-			return false;
-		if (avatarUrl == null) {
-			if (other.avatarUrl != null)
-				return false;
-		} else if (!avatarUrl.equals(other.avatarUrl))
-			return false;
-		if (communityVisibilityState != other.communityVisibilityState)
-			return false;
-		if (id != other.id)
-			return false;
-		if (lastLogOff == null) {
-			if (other.lastLogOff != null)
-				return false;
-		} else if (!lastLogOff.equals(other.lastLogOff))
-			return false;
-		if (locCityId != other.locCityId)
-			return false;
-		if (locCountryCode == null) {
-			if (other.locCountryCode != null)
-				return false;
-		} else if (!locCountryCode.equals(other.locCountryCode))
-			return false;
-		if (locStateCode == null) {
-			if (other.locStateCode != null)
-				return false;
-		} else if (!locStateCode.equals(other.locStateCode))
-			return false;
-		if (personaName == null) {
-			if (other.personaName != null)
-				return false;
-		} else if (!personaName.equals(other.personaName))
-			return false;
-		if (personaState != other.personaState)
-			return false;
-		if (personaStateFlags != other.personaStateFlags)
-			return false;
-		if (primaryClanId == null) {
-			if (other.primaryClanId != null)
-				return false;
-		} else if (!primaryClanId.equals(other.primaryClanId))
-			return false;
-		if (profileState != other.profileState)
-			return false;
-		if (profileUrl == null) {
-			if (other.profileUrl != null)
-				return false;
-		} else if (!profileUrl.equals(other.profileUrl))
-			return false;
-		if (realName == null) {
-			if (other.realName != null)
-				return false;
-		} else if (!realName.equals(other.realName))
-			return false;
-		if (timeCreated == null) {
-			if (other.timeCreated != null)
-				return false;
-		} else if (!timeCreated.equals(other.timeCreated))
-			return false;
-		return true;
-	}
-
 }

@@ -11,13 +11,13 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.github.koraktor.steamcondenser.exceptions.WebApiException;
+import com.github.koraktor.steamcondenser.steam.community.WebApi;
+
 import at.jku.oeh.lan.AbstractTestCase;
 import at.jku.oeh.lan.laganizer.model.Game;
 import at.jku.oeh.lan.laganizer.model.dao.GameDAO;
 import at.jku.oeh.lan.laganizer.steam.SteamGameQuery;
-
-import com.github.koraktor.steamcondenser.exceptions.WebApiException;
-import com.github.koraktor.steamcondenser.steam.community.WebApi;
 
 public class SteamGameTest extends AbstractTestCase {
 	@Value("${steam.apiKey}")

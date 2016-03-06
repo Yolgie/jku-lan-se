@@ -59,7 +59,6 @@ public class SteamGameQueryImpl implements SteamGameQuery {
 	private boolean contains(long[] a, long n) {
 		for (int i = 0; i < a.length; i++) {
 			if (a[i] == n) {
-				log.debug("FOUND: "+n);
 				return true;
 			}
 		}

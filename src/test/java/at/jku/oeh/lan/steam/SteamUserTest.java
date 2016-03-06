@@ -18,7 +18,7 @@ import at.jku.oeh.lan.laganizer.steam.SteamUserQuery;
 
 import com.github.koraktor.steamcondenser.exceptions.WebApiException;
 import com.github.koraktor.steamcondenser.steam.community.WebApi;
-
+//http://www.jayway.com/2010/12/28/using-powermock-with-spring-integration-testing/
 public class SteamUserTest extends AbstractTestCase {
 	private SteamUser robin = new SteamUser(
 		76561197960435530L,
@@ -37,7 +37,10 @@ public class SteamUserTest extends AbstractTestCase {
 		(short) 0,
 		"US",
 		"WA",
-		3961L
+		3961L,
+		null,
+		null,
+		null
 	);
 	
 	@Value("${steam.apiKey}")

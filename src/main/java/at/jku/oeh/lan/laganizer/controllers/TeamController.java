@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
 import at.jku.oeh.lan.laganizer.model.Team;
-import at.jku.oeh.lan.laganizer.model.TeamDAO;
 import at.jku.oeh.lan.laganizer.model.Tournament;
 import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.dao.TeamDAO;
 import at.jku.oeh.lan.laganizer.model.dao.TournamentDAO;
 import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
 

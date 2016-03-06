@@ -34,6 +34,16 @@ public class SteamSyncTest extends AbstractTestCase {
 		userDao.save(fuero);
 		userDao.save(robin);
 		sync.syncUserStates();
+		for (User user : userDao.findAll()) {
+			if ("fuerob@example.org".equals(user.getName())) {
+				Assert.assertNotNull(user.getState());
+				Assert.assertEquals(
+						"FTL - Faster Than Light",
+						user.getState().getGame().getName()
+				);
+			}
+			Assert.assertNotNull(user.getSteamAvatarUrl());
+		}
 	}
 	
 	@Test

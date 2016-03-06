@@ -7,11 +7,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -32,9 +34,18 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     private String email;
 
-    private long steamId;
+    @Column(nullable=true)
+    private Long steamId;
     private boolean steamVisible;
+    @Column(length = 255, nullable = true)
     private String steamAvatarUrl;
+    
+    @OneToOne(optional=true, 
+    		orphanRemoval=true,
+    		cascade=CascadeType.ALL,
+    		fetch=FetchType.LAZY,
+    		mappedBy="user")
+    private UserState state;
 
     @Column(length = 80, nullable = true)
     private String googleId;
@@ -42,13 +53,23 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @Column(length = 80, nullable = true)
     private String saml2Id;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     private Set<String> roles = new HashSet<>();
 
     public User() {
         this.uuid = UUID.randomUUID().toString();
     }
 
+    public UserState getState() {
+		return state;
+       }
+
+	public void setState(UserState state) {
+		if (state != null)
+			state.setUser(this);
+		this.state = state;
+	}
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         final Set<GrantedAuthority> authorities = new HashSet<>();
@@ -126,11 +147,11 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         this.roles = roles;
     }
 
-    public long getSteamId() {
+    public Long getSteamId() {
         return steamId;
     }
 
-    public void setSteamId(long steamId) {
+    public void setSteamId(Long steamId) {
         this.steamId = steamId;
     }
 
@@ -180,5 +201,30 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
 	public void setSteamAvatarUrl(String steamAvatarUrl) {
 		this.steamAvatarUrl = steamAvatarUrl;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (uuid == null) {
+			if (other.uuid != null)
+				return false;
+		} else if (!uuid.equals(other.uuid))
+			return false;
+		return true;
 	}
 }

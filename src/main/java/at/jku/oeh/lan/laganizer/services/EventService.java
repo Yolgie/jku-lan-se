@@ -1,10 +1,11 @@
 package at.jku.oeh.lan.laganizer.services;
 
 import at.jku.oeh.lan.laganizer.model.Event;
-import at.jku.oeh.lan.laganizer.model.EventDAO;
 import at.jku.oeh.lan.laganizer.model.User;
 import at.jku.oeh.lan.laganizer.model.actionlog.EventAction;
 import at.jku.oeh.lan.laganizer.model.actionlog.EventLog;
+import at.jku.oeh.lan.laganizer.model.dao.EventDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

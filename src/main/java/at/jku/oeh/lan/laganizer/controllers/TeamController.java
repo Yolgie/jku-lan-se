@@ -1,23 +1,21 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
+import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
+import at.jku.oeh.lan.laganizer.model.base.UserDAO;
+import at.jku.oeh.lan.laganizer.model.base.UserNotFoundException;
+import at.jku.oeh.lan.laganizer.model.events.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
-import at.jku.oeh.lan.laganizer.model.events.Team;
-import at.jku.oeh.lan.laganizer.model.events.TeamDAO;
-import at.jku.oeh.lan.laganizer.model.events.Tournament;
-import at.jku.oeh.lan.laganizer.model.events.TournamentDAO;
-import at.jku.oeh.lan.laganizer.model.base.User;
-import at.jku.oeh.lan.laganizer.model.base.UserDAO;
-
 @RestController
 @RequestMapping("/teams/")
 public class TeamController {
 
+    @Autowired
+    private TeamService teamService;
     @Autowired
     private TeamDAO teamDao;
     @Autowired
@@ -26,97 +24,90 @@ public class TeamController {
     private TournamentDAO tournamentDao;
 
     @RequestMapping(value = "new", method = RequestMethod.POST)
-    public RESTDataWrapperDTO<Team> create(@RequestParam long userId, @RequestParam long tournamentId){
-    	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
-		result.setSuccess(false);
-		
-    	Team team = new Team();
-    	
-    	User user = userDao.findOne(userId);
-    	if(user != null){
-        	team.setName(user.getName());
-        	team.addPlayer(user);
-        	
-        	Tournament t = tournamentDao.findOne(tournamentId);
-        	if(t != null){
-        		team.setTournament(t);
+    public RESTDataWrapperDTO<Team> create(@RequestParam long userId, @RequestParam long tournamentId) {
+        RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
 
-            	teamDao.save(team);
-            	result.setSuccess(true);
-        	}
-    	}
-    	
-    	result.setData(team);
-    	return result;
+        Team team = null;
+        try {
+            result.setData(teamService.createTeam(userId, tournamentId));
+            result.setSuccess(false);
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setErrorDetails("User can't be found");
+        } catch (TournamentNotFoundException e) {
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setErrorDetails("Tournament can't be found");
+        }
+        return result;
     }
-    
+
     @RequestMapping(value = "addPlayer", method = RequestMethod.POST)
-    public RESTDataWrapperDTO<Team> addPlayer(@RequestParam long id, @RequestParam long userId){
-    	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
-    	Team team = teamDao.findOne(id);
-		result.setSuccess(false);
-    	
-    	if(team != null){
-        	User user;
-        	if((user = userDao.findOne(userId)) != null){
-            	team.addPlayer(user);
-            	teamDao.save(team);
-            	result.setSuccess(true);
-        	}
-    	}
-
-    	result.setData(team);
-    	return result;
+    public RESTDataWrapperDTO<Team> addPlayer(@RequestParam long teamId, @RequestParam long userId) {
+        RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
+        try {
+            result.setData(teamService.addPlayer(teamId, userId));
+            result.setSuccess(true);
+        } catch (TeamNotFoundException e) {
+            e.printStackTrace();
+            result.setErrorDetails("Team with ID " + teamId + " can't be found");
+            result.setSuccess(false);
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            result.setErrorDetails("User with ID " + userId + " can't be found");
+            result.setSuccess(true);
+        }
+        return result;
     }
-    
+
     @RequestMapping(value = "delPlayer", method = RequestMethod.POST)
-    public RESTDataWrapperDTO<Team> delPlayer(@RequestParam long id, @RequestParam long userId){
-    	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
-    	Team team = teamDao.findOne(id);
-    	
-    	result.setSuccess(false);
-    	
-    	if(team != null){
-        	User user;
-        	if((user = userDao.findOne(userId)) != null){
-        		team.delPlayer(user);
-            	teamDao.save(team);
-            	result.setSuccess(true);
-        	}
-        	
-        	if(team.getPlayers().size() <= 0){
-        		teamDao.delete(id);
-        	}
-    	}
+    public RESTDataWrapperDTO<Team> delPlayer(@RequestParam long teamId, @RequestParam long userId) {
+        RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
+        try {
+            result.setData(teamService.removePlayer(teamId, userId));
+            result.setSuccess(true);
+        } catch (TeamNotFoundException e) {
+            e.printStackTrace();
+            result.setErrorDetails("Team with ID " + teamId + " can't be found");
+            result.setSuccess(false);
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            result.setErrorDetails("User with ID " + userId + " can't be found");
+            result.setSuccess(true);
+        }
+        return result;
+    }
 
-    	result.setData(team);
-    	return result;
-    }
-    
     @RequestMapping(value = "changeName", method = RequestMethod.POST)
-    public RESTDataWrapperDTO<Team> changeName(@RequestParam long id, @RequestParam String name){
-    	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
-    	Team team = teamDao.findOne(id);
-    	
-    	if(team == null){
-    		result.setSuccess(false);
-    	}else{
-        	team.setName(name);
-        	teamDao.save(team);
-        	result.setSuccess(true);
-    	}
-    	
-    	result.setData(team);
-    	return result;
+    public RESTDataWrapperDTO<Team> changeName(@RequestParam long id, @RequestParam String name) {
+        RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
+        try {
+            result.setData(teamService.renameTeam(id, name));
+            result.setSuccess(true);
+        } catch (TeamNotFoundException e) {
+            e.printStackTrace();
+            result.setErrorDetails("Team with ID " + id + " can't be found");
+            result.setSuccess(false);
+        } catch (InvalidTeamnameException e) {
+            e.printStackTrace();
+            result.setErrorDetails("Team can't be renamed to " + name + ". Name not Valid");
+            result.setSuccess(false);
+        }
+        return result;
     }
-    
+
     @RequestMapping(value = "find", method = RequestMethod.GET)
-    public RESTDataWrapperDTO<Team> getTeam(@RequestParam long id){
-    	RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
-    	Team team = teamDao.findOne(id);
-    	
-		result.setSuccess(team != null);
-    	result.setData(team);
-    	return result;
+    public RESTDataWrapperDTO<Team> getTeam(@RequestParam long id) {
+        RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
+        try {
+            result.setData(teamService.findTeamById(id));
+            result.setSuccess(true);
+        } catch (TeamNotFoundException e) {
+            e.printStackTrace();
+            result.setErrorDetails("Team with Id " + id + " can't be found");
+            result.setSuccess(false);
+        }
+        return result;
     }
 }

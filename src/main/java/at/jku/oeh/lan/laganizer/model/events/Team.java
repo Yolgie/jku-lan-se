@@ -66,4 +66,8 @@ public class Team implements Serializable{
 	public long getId() {
 		return id;
 	}
+
+	public void setPlayers(Set<User> players) {
+		this.players = players;
+	}
 }

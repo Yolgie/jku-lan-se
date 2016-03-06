@@ -9,4 +9,7 @@ import org.springframework.stereotype.Component;
 @Transactional
 public interface TeamDAO extends CrudRepository<Team, Long> {
 
+    Team findTeamById(long id);
+
+    Team findTeamByName(String name);
 }

@@ -8,13 +8,15 @@ import javax.transaction.Transactional;
 @Component
 @Transactional
 public interface UserDAO extends CrudRepository<User, Long> {
+    User findByName(String name);
+
+    User findById(long id);
+
+    User findByEmail(String email);
+
     User findBySteamId(String steamId);
 
     User findByGoogleId(String googleId);
 
     User findBySaml2Id(String saml2Id);
-
-    User findUserByName(String name);
-
-    User findUserById(long id);
 }

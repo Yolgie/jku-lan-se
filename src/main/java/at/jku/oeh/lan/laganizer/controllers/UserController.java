@@ -6,23 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/users/")
 public class UserController {
 
     @Autowired
-    private UserDAO userDao;
+    private UserService userService;
 
     @RequestMapping(value = "search", method = RequestMethod.GET)
     public RESTDataWrapperDTO<User> search(@RequestParam String name) {
         RESTDataWrapperDTO<User> result;
         try {
-            result = new RESTDataWrapperDTO<>(UserService.findByName(name)
+            result = new RESTDataWrapperDTO<>(userService.findUserByName(name)
                     , true);
         } catch (UserNotFoundException e) {
-            e.printStackTrace(); //FIXME
+            e.printStackTrace();
             result = new RESTDataWrapperDTO<>();
             result.setSuccess(false);
             result.setErrorDetails("Username not found");
@@ -34,10 +33,10 @@ public class UserController {
     public RESTDataWrapperDTO<User> show(@PathVariable long id) {
         RESTDataWrapperDTO<User> result;
         try {
-            result = new RESTDataWrapperDTO<>(UserService.findById(id)
+            result = new RESTDataWrapperDTO<>(userService.findUserById(id)
                     , true);
         } catch (UserNotFoundException e) {
-            e.printStackTrace(); //FIXME
+            e.printStackTrace();
             result = new RESTDataWrapperDTO<>();
             result.setSuccess(false);
             result.setErrorDetails("Username not found");
@@ -45,12 +44,11 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTDataWrapperDTO<User> update(@PathVariable long id, @RequestParam String name) {
         RESTDataWrapperDTO<User> result = new RESTDataWrapperDTO<>();
         try {
-            User user = UserService.findById(id);
-            result.setData(UserService.setName(user, name));
+            result.setData(userService.setUserName(id, name));
             result.setSuccess(true);
         } catch (UserNotFoundException e) {
             e.printStackTrace();
@@ -68,7 +66,7 @@ public class UserController {
     public RESTDataWrapperDTO<User> create(@RequestParam String name) {
         RESTDataWrapperDTO<User> result = new RESTDataWrapperDTO<>();
         try {
-            User user = UserService.createUser(name);
+            User user = userService.createUser(name);
             result.setData(user);
             result.setSuccess(true);
         } catch (InvalidUsernameException e) {
@@ -83,8 +81,7 @@ public class UserController {
     public RESTDataWrapperDTO<User> delete(@PathVariable long id) {
         RESTDataWrapperDTO<User> result = new RESTDataWrapperDTO<>();
         try {
-            User user = UserService.findById(id);
-            result.setData(UserService.setInactive(user));
+            result.setData(userService.deleteUserById(id));
             result.setSuccess(true);
         } catch (UserNotFoundException e) {
             e.printStackTrace();
@@ -96,6 +93,6 @@ public class UserController {
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public RESTDataWrapperDTO list() {
-        return new RESTDataWrapperDTO((Serializable) UserService.findAll(), true);
+        return new RESTDataWrapperDTO((Serializable) userService.findAllUsers(), true);
     }
 }

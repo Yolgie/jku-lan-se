@@ -1,7 +1,10 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
-import at.jku.oeh.lan.laganizer.model.base.*;
+import at.jku.oeh.lan.laganizer.model.base.InvalidUsernameException;
+import at.jku.oeh.lan.laganizer.model.base.User;
+import at.jku.oeh.lan.laganizer.model.base.UserNotFoundException;
+import at.jku.oeh.lan.laganizer.model.base.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -93,6 +96,6 @@ public class UserController {
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public RESTDataWrapperDTO list() {
-        return new RESTDataWrapperDTO((Serializable) userService.findAllUsers(), true);
+        return new RESTDataWrapperDTO<>((Serializable) userService.findAllUsers(), true);
     }
 }

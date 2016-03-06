@@ -1,29 +1,32 @@
-package at.jku.oeh.lan.laganizer.model.events;
+package at.jku.oeh.lan.laganizer.model.events.tournament.team;
 
 import at.jku.oeh.lan.laganizer.model.base.User;
 import at.jku.oeh.lan.laganizer.model.base.UserNotFoundException;
 import at.jku.oeh.lan.laganizer.model.base.UserService;
+import at.jku.oeh.lan.laganizer.model.events.tournament.Tournament;
+import at.jku.oeh.lan.laganizer.model.events.tournament.TournamentNotFoundException;
+import at.jku.oeh.lan.laganizer.model.events.tournament.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
 public class TeamService {
     @Autowired
-    TeamDAO teamDAO;
+    private TeamDAO teamDAO;
     @Autowired
-    UserService userService;
+    private UserService userService;
+    @Autowired
     private TournamentService tournamentService;
 
     public Team createTeam(long userId, long tournamentId) throws UserNotFoundException, TournamentNotFoundException {
         User user = userService.findUserById(userId);
-        Tournament tournament = tournamentService.findById(tournamentId);
+        Tournament tournament = tournamentService.findTournamentById(tournamentId);
         Team team = new Team();
         team.setName(user.getName());
-        team.setPlayers(new HashSet<>(Arrays.asList(user))); //FIXME more elegant casting?
+        team.addPlayer(user);
         team.setTournament(tournament);
         teamDAO.save(team);
         return team;
@@ -72,12 +75,7 @@ public class TeamService {
     public Team addPlayer(long teamId, long playerId) throws TeamNotFoundException, UserNotFoundException {
         Team team = findTeamById(teamId);
         User player = userService.findUserById(playerId);
-        Set<User> players = team.getPlayers();
-        if (players == null) {
-            players = new HashSet<>();
-        }
-        players.add(player);
-        team.setPlayers(players);
+        team.addPlayer(player);
         teamDAO.save(team);
         return team;
     }
@@ -86,12 +84,7 @@ public class TeamService {
     public Team removePlayer(long teamId, long playerId) throws TeamNotFoundException, UserNotFoundException {
         Team team = findTeamById(teamId);
         User player = userService.findUserById(playerId);
-        Set<User> players = team.getPlayers();
-        if (players == null) {
-            players = new HashSet<>();
-        }
-        players.remove(player);
-        team.setPlayers(players);
+        team.removePlayer(player);
         teamDAO.save(team);
         return team;
     }

@@ -1,9 +1,9 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
-import at.jku.oeh.lan.laganizer.model.base.User;
-import at.jku.oeh.lan.laganizer.model.base.UserDAO;
-import at.jku.oeh.lan.laganizer.model.events.*;
+import at.jku.oeh.lan.laganizer.model.base.UserNotFoundException;
+import at.jku.oeh.lan.laganizer.model.events.tournament.Tournament;
+import at.jku.oeh.lan.laganizer.model.events.tournament.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,13 +18,7 @@ import java.io.Serializable;
 @PermitAll
 public class TournamentController {
     @Autowired
-    private TournamentDAO tournamentDAO;
-    @Autowired
-    private UserDAO userDAO;
-    @Autowired
-    private EventService eventService;
-    @Autowired
-    private TimeService timeService;
+    private TournamentService tournamentService;
 
     //C    create
     // RU  disable/enable
@@ -36,7 +30,7 @@ public class TournamentController {
 
     @RequestMapping(value = "show", method = RequestMethod.GET)
     public RESTDataWrapperDTO list() {
-        return new RESTDataWrapperDTO<>((Serializable) tournamentDAO.findAll(), true);
+        return new RESTDataWrapperDTO<>((Serializable) tournamentService.findAllTournaments(), true);
     }
 
     @RequestMapping(value = "new", method = RequestMethod.POST)
@@ -44,23 +38,17 @@ public class TournamentController {
                                                  @RequestParam long eventManagerUserId,
                                                  @RequestParam String startTime,
                                                  @RequestParam String description,
-                                                 @RequestParam int teamSize,
+                                                 @RequestParam int maxTeamSize,
                                                  @RequestParam String game) {
-        RESTDataWrapperDTO<Tournament> tournamentRESTDataWrapperDTO = new RESTDataWrapperDTO<>();
-        Tournament tournament = new Tournament();
-        User tournamentManager = userDAO.findOne(eventManagerUserId);
-        tournament.setName(name);
-        tournament.setEventManager(tournamentManager);
-        tournament.setStartTime(timeService.StringToInstant(startTime));
-        tournament.setDescription(description);
-        tournament.setEnabled(false);
-        tournament.setTeamSize(teamSize);
-        tournament.setGame(game);
-        tournamentDAO.save(tournament);
-        eventService.createEvent(tournament, tournamentManager);
-
-        tournamentRESTDataWrapperDTO.setData(tournament);
-        tournamentRESTDataWrapperDTO.setSuccess(true);
-        return tournamentRESTDataWrapperDTO;
+        RESTDataWrapperDTO<Tournament> result = new RESTDataWrapperDTO<>();
+        try {
+            result.setData(tournamentService.createTournament(game, maxTeamSize, eventManagerUserId, startTime, description, game));
+            result.setSuccess(true);
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            result.setErrorDetails("Event manager with user ID " + eventManagerUserId + " can't be found");
+            result.setSuccess(false);
+        }
+        return result;
     }
 }

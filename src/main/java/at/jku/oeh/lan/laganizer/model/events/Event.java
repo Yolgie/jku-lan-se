@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "EVENT_TYPE")
+// @DiscriminatorValue("event")
 public class Event {
     @Id
     @GeneratedValue
@@ -17,6 +20,8 @@ public class Event {
 
     @NotNull
     protected String name;
+
+    protected String description;
 
     @NotNull
     @ManyToOne
@@ -26,8 +31,6 @@ public class Event {
     protected Instant startTime;
 
     protected Instant endTime;
-
-    protected String description;
 
     @NotNull
     protected boolean enabled = false;
@@ -50,68 +53,68 @@ public class Event {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getDescription() {
+        return description;
     }
 
     public User getEventManager() {
         return eventManager;
     }
 
-    public void setEventManager(User eventManager) {
-        this.eventManager = eventManager;
-    }
-
     public Instant getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(Instant startTime) {
-        this.startTime = startTime;
     }
 
     public Instant getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Instant endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public boolean isEnabled() {
         return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public boolean isStarted() {
         return started;
     }
 
-    public void setStarted(boolean started) {
-        this.started = started;
-    }
-
     public boolean isFinished() {
         return finished;
     }
 
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
     public List<EventLog> getEventLog() {
         return eventLog;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEventManager(User userId) {
+        this.eventManager = userId;
+    }
+
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
     public void addEventLogEntry(EventLog eventLog) {

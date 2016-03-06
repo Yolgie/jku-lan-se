@@ -1,9 +1,12 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
-import at.jku.oeh.lan.laganizer.model.base.UserDAO;
 import at.jku.oeh.lan.laganizer.model.base.UserNotFoundException;
-import at.jku.oeh.lan.laganizer.model.events.*;
+import at.jku.oeh.lan.laganizer.model.events.tournament.TournamentNotFoundException;
+import at.jku.oeh.lan.laganizer.model.events.tournament.team.InvalidTeamnameException;
+import at.jku.oeh.lan.laganizer.model.events.tournament.team.Team;
+import at.jku.oeh.lan.laganizer.model.events.tournament.team.TeamNotFoundException;
+import at.jku.oeh.lan.laganizer.model.events.tournament.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,18 +19,11 @@ public class TeamController {
 
     @Autowired
     private TeamService teamService;
-    @Autowired
-    private TeamDAO teamDao;
-    @Autowired
-    private UserDAO userDao;
-    @Autowired
-    private TournamentDAO tournamentDao;
 
     @RequestMapping(value = "new", method = RequestMethod.POST)
     public RESTDataWrapperDTO<Team> create(@RequestParam long userId, @RequestParam long tournamentId) {
         RESTDataWrapperDTO<Team> result = new RESTDataWrapperDTO<>();
 
-        Team team = null;
         try {
             result.setData(teamService.createTeam(userId, tournamentId));
             result.setSuccess(false);

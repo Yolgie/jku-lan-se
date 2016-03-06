@@ -1,4 +1,4 @@
-package at.jku.oeh.lan.laganizer.model.events;
+package at.jku.oeh.lan.laganizer.model.events.tournament.team;
 
 import javax.transaction.Transactional;
 

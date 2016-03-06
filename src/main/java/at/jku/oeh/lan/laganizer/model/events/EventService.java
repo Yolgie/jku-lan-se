@@ -1,13 +1,12 @@
 package at.jku.oeh.lan.laganizer.model.events;
 
-import at.jku.oeh.lan.laganizer.model.events.Event;
-import at.jku.oeh.lan.laganizer.model.events.EventDAO;
-import at.jku.oeh.lan.laganizer.model.base.User;
 import at.jku.oeh.lan.laganizer.model.actionlog.EventAction;
 import at.jku.oeh.lan.laganizer.model.actionlog.EventLog;
+import at.jku.oeh.lan.laganizer.model.base.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+//TODO
 @Service
 public class EventService {
 
@@ -23,17 +22,22 @@ public class EventService {
     }
 
     public void finishEvent(Event event, User reporter) {
+        //TODO
     }
 
     public void enableEvent(Event event, User reporter) {
+        //TODO
     }
 
     public void disableEvent(Event event, User reporter) {
+        //TODO
     }
 
     public void toggleEvent(Event event, User reporter) {
+        //TODO
     }
 
-    public void createEvent(Event event, User reporter) {
+    public void createEvent(Event event, long reporter) {
+        //TODO
     }
 }

@@ -5,5 +5,5 @@ public enum EventAction implements LogAction {
     STARTED,
     ENABLED,
     DISABLED,
-    FINISHED;
+    FINISHED
 }

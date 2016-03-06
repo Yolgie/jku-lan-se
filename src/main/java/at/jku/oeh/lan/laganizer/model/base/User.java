@@ -1,7 +1,7 @@
 package at.jku.oeh.lan.laganizer.model.base;
 
 import at.jku.oeh.lan.laganizer.model.BaseEntity;
-import at.jku.oeh.lan.laganizer.model.events.Team;
+import at.jku.oeh.lan.laganizer.model.events.tournament.team.Team;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class User extends BaseEntity implements UserDetails, Serializable {
@@ -59,9 +60,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
             return Collections.emptyList();
         }
 
-        for (String role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role));
-        }
+        authorities.addAll(roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 
         return authorities;
     }

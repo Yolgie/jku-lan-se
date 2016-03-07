@@ -65,7 +65,9 @@ public class User extends BaseEntity implements UserDetails, Serializable {
             return Collections.emptyList();
         }
 
-        authorities.addAll(roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+        for (String role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
 
         return authorities;
     }
@@ -106,6 +108,10 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         return uuid;
     }
 
+    public Set<String> getRoles() {
+        return roles;
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -130,14 +136,18 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         return saml2Id;
     }
 
-    public Set<String> getRoles() {
-        return roles;
+    public void setSaml2Id(String saml2Id) {
+        this.saml2Id = saml2Id;
     }
 
     /// Setter ///
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 
     public void setName(String name) {
@@ -162,10 +172,6 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     public void setSaml2Id(String saml2Id) {
         this.saml2Id = saml2Id;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
     }
 
     public Clan getClan() {

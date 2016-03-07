@@ -1,5 +1,6 @@
 package at.jku.oeh.lan.laganizer.model.base;
 
+import at.jku.oeh.lan.laganizer.model.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,9 @@ public class UserService {
 
     //FIXME Connect with OpenIDs/authorization
     public User createUser(String name) throws InvalidUsernameException {
-        isValidUsername(name);
+        if (!Validator.isValidUserName(name)) {
+            throw new InvalidUsernameException(name);
+        }
         User user = new User();
         user.setName(name);
         user.setActive(true);
@@ -62,20 +65,24 @@ public class UserService {
 
     public User setUserName(long id, String name) throws UserNotFoundException, InvalidUsernameException {
         User user = findUserById(id);
-        if (isValidUsername(name)) {
+        if (Validator.isValidUserName(name)) {
             user.setName(name);
+        } else {
+            throw new InvalidUsernameException(name);
         }
-        userDAO.save(user);
+            userDAO.save(user);
 
         return user;
     }
 
     public User setUserEmail(long id, String email) throws UserNotFoundException, InvalidEmailException {
         User user = findUserById(id);
-        if (isValidEmail(email)) {
+        if (Validator.isValidEmail(email)) {
             user.setEmail(email);
+            userDAO.save(user);
+        } else {
+            throw new InvalidEmailException(email);
         }
-        userDAO.save(user);
         return user;
     }
 
@@ -109,19 +116,4 @@ public class UserService {
     }
 
 
-    private boolean isValidUsername(String name) throws InvalidUsernameException {
-        //TODO implement constraints (RegEx?)
-        if (name.length() < 3) {
-            throw new InvalidUsernameException(name);
-        }
-        return true;
-    }
-
-    private boolean isValidEmail(String email) throws InvalidEmailException {
-        //TODO implement constraints (RegEx?)
-        if (email.length() < 6 || !email.contains("@") || !email.contains(".")) {
-            throw new InvalidEmailException(email);
-        }
-        return true;
-    }
 }

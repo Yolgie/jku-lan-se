@@ -6,6 +6,7 @@ import at.jku.oeh.lan.laganizer.model.base.UserService;
 import at.jku.oeh.lan.laganizer.model.events.tournament.Tournament;
 import at.jku.oeh.lan.laganizer.model.events.tournament.TournamentNotFoundException;
 import at.jku.oeh.lan.laganizer.model.events.tournament.TournamentService;
+import at.jku.oeh.lan.laganizer.model.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +34,13 @@ public class TeamService {
     }
 
     public Team renameTeam(long id, String name) throws TeamNotFoundException, InvalidTeamnameException {
-        isValidName(name);
         Team team = findTeamById(id);
-        team.setName(name);
-        teamDAO.save(team);
+        if (Validator.isValidTeamName(name)){
+            team.setName(name);
+            teamDAO.save(team);
+        } else {
+            throw new InvalidTeamnameException(name);
+        }
         return team;
     }
 
@@ -89,11 +93,4 @@ public class TeamService {
         return team;
     }
 
-    private boolean isValidName(String name) throws InvalidTeamnameException {
-        //TODO constraints on team name
-        if (name.length() < 3) {
-            throw new InvalidTeamnameException(name);
-        }
-        return true;
-    }
 }

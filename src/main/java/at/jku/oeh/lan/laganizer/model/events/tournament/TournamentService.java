@@ -5,7 +5,7 @@ import at.jku.oeh.lan.laganizer.model.base.UserNotFoundException;
 import at.jku.oeh.lan.laganizer.model.base.UserService;
 import at.jku.oeh.lan.laganizer.model.events.EventService;
 import at.jku.oeh.lan.laganizer.model.events.TimeService;
-import at.jku.oeh.lan.laganizer.model.util.converter;
+import at.jku.oeh.lan.laganizer.model.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +55,6 @@ public class TournamentService extends EventService {
 
 
     public Set<Tournament> findAllTournaments() {
-        return converter.iterableToSet(tournamentDAO.findAll());
+        return Converter.iterableToSet(tournamentDAO.findAll());
     }
 }

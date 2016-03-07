@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class converter {
+public class Converter {
     public static <E> Set<E> iterableToSet(Iterable<E> iterable) {
         Set<E> set = new HashSet<>();
         for (E e : iterable) {

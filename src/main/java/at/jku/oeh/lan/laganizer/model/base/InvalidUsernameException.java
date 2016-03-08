@@ -1,9 +1,10 @@
 package at.jku.oeh.lan.laganizer.model.base;
 
-public class InvalidUsernameException extends Exception {
-    public final String name;
+import at.jku.oeh.lan.laganizer.model.InvalidStringException;
 
-    public InvalidUsernameException(String name) {
-        this.name = name;
+public class InvalidUsernameException extends InvalidStringException {
+
+    public InvalidUsernameException(String username) {
+        super(username);
     }
 }

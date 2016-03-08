@@ -3,7 +3,7 @@ package at.jku.oeh.lan.laganizer.controllers;
 import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
 import at.jku.oeh.lan.laganizer.model.base.UserNotFoundException;
 import at.jku.oeh.lan.laganizer.model.events.tournament.TournamentNotFoundException;
-import at.jku.oeh.lan.laganizer.model.events.tournament.team.InvalidTeamnameException;
+import at.jku.oeh.lan.laganizer.model.events.tournament.team.InvalidTeamNameException;
 import at.jku.oeh.lan.laganizer.model.events.tournament.team.Team;
 import at.jku.oeh.lan.laganizer.model.events.tournament.team.TeamNotFoundException;
 import at.jku.oeh.lan.laganizer.model.events.tournament.team.TeamService;
@@ -84,7 +84,7 @@ public class TeamController {
             e.printStackTrace();
             result.setErrorDetails("Team with ID " + id + " can't be found");
             result.setSuccess(false);
-        } catch (InvalidTeamnameException e) {
+        } catch (InvalidTeamNameException e) {
             e.printStackTrace();
             result.setErrorDetails("Team can't be renamed to " + name + ". Name not Valid");
             result.setSuccess(false);

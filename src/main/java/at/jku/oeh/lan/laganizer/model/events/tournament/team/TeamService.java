@@ -33,13 +33,13 @@ public class TeamService {
         return team;
     }
 
-    public Team renameTeam(long id, String name) throws TeamNotFoundException, InvalidTeamnameException {
+    public Team renameTeam(long id, String name) throws TeamNotFoundException, InvalidTeamNameException {
         Team team = findTeamById(id);
         if (Validator.isValidTeamName(name)){
             team.setName(name);
             teamDAO.save(team);
         } else {
-            throw new InvalidTeamnameException(name);
+            throw new InvalidTeamNameException(name);
         }
         return team;
     }

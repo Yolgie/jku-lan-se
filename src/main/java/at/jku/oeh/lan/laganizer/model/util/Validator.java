@@ -15,4 +15,9 @@ public class Validator {
         //TODO constraints on team name
         return name.length() >= 3;
     }
+
+    public static boolean isValidClanName(String name) {
+        //TODO constraints on clan name
+        return name.length() >= 3;
+    }
 }

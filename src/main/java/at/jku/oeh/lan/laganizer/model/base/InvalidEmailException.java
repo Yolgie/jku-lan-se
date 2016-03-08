@@ -1,9 +1,10 @@
 package at.jku.oeh.lan.laganizer.model.base;
 
-public class InvalidEmailException extends Exception {
-    public final String email;
+import at.jku.oeh.lan.laganizer.model.InvalidStringException;
+
+public class InvalidEmailException extends InvalidStringException {
 
     public InvalidEmailException(String email) {
-        this.email = email;
+        super(email);
     }
 }

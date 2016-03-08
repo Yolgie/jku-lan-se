@@ -1,8 +1,6 @@
 package at.jku.oeh.lan.laganizer.model.base;
 
 import at.jku.oeh.lan.laganizer.model.BaseEntity;
-import at.jku.oeh.lan.laganizer.model.Clan;
-import at.jku.oeh.lan.laganizer.model.events.tournament.team.Team;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 public class User extends BaseEntity implements UserDetails, Serializable {
@@ -38,13 +35,12 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
 
-    @NotNull
     @ManyToOne
     private Clan clan;
 
-    @ManyToMany
+/*    @ManyToMany
     @ElementCollection
-    private Set<Team> teams;
+    private Set<Team> teams;*/
 
     public User() {
         this.uuid = UUID.randomUUID().toString();
@@ -136,8 +132,8 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         return saml2Id;
     }
 
-    public void setSaml2Id(String saml2Id) {
-        this.saml2Id = saml2Id;
+    public Clan getClan() {
+        return clan;
     }
 
     /// Setter ///
@@ -154,7 +150,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         this.name = name;
     }
 
-    public void setActive(boolean active) {
+    void setActive(boolean active) {
         this.active = active;
     }
 
@@ -174,13 +170,10 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         this.saml2Id = saml2Id;
     }
 
-    public Clan getClan() {
-        return clan;
-    }
-
-    public void setClan(Clan clan) {
+    void setClan(Clan clan) {
         this.clan = clan;
     }
+
 
     public String toString() {
         return "User: " + getName() + " with E-Mail: " + getEmail() + " and Roles: " + roles.toString();

@@ -1,9 +1,10 @@
 package at.jku.oeh.lan.laganizer.model.events.tournament.team;
 
-public class InvalidTeamnameException extends Exception {
-    public final String name;
+import at.jku.oeh.lan.laganizer.model.InvalidStringException;
 
-    public InvalidTeamnameException(String name) {
-        this.name = name;
+public class InvalidTeamNameException extends InvalidStringException {
+
+    public InvalidTeamNameException(String teamname) {
+        super(teamname);
     }
 }

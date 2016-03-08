@@ -12,10 +12,8 @@ public class UserService {
 
     @Autowired
     private UserDAO userDAO;
-    /*TODO
     @Autowired
-    private ClanDAO userDAO;
-    */
+    private ClanService clanService;
 
     //FIXME Connect with OpenIDs/authorization
     public User createUser(String name) throws InvalidUsernameException {
@@ -25,6 +23,7 @@ public class UserService {
         User user = new User();
         user.setName(name);
         user.setActive(true);
+        user.setClan(clanService.createClan(user));
         userDAO.save(user);
         return user;
     }
@@ -58,7 +57,20 @@ public class UserService {
         Iterable<User> users = userDAO.findAll();
         Set<User> userSet = new HashSet<>();
         for (User user : users) {
-            userSet.add(user);
+            if (user.isActive()) {
+                userSet.add(user);
+            }
+        }
+        return userSet;
+    }
+
+    public Set<User> findInactiveUsers() {
+        Iterable<User> users = userDAO.findAll();
+        Set<User> userSet = new HashSet<>();
+        for (User user : users) {
+            if (!user.isActive()) {
+                userSet.add(user);
+            }
         }
         return userSet;
     }
@@ -70,7 +82,7 @@ public class UserService {
         } else {
             throw new InvalidUsernameException(name);
         }
-            userDAO.save(user);
+        userDAO.save(user);
 
         return user;
     }
@@ -106,14 +118,36 @@ public class UserService {
 
     // Actually, 'hide' user instead of finally deleting it...
     public User deleteUserById(long id) throws UserNotFoundException {
-        User user = userDAO.findById(id);
-        if (user == null) {
-            throw new UserNotFoundException("User with ID " + id + "can't be deleted - ID not found");
-        }
+        User user = findUserById(id);
         user.setActive(false);
+        clanService.removeUser(user.getClan(), user);
+        user.setClan(null);
         userDAO.save(user);
         return user;
     }
 
+    public User addUserToClan(long userId, long clanId) throws UserNotFoundException, ClanNotFoundException {
+        User user = findUserById(userId);
+        Clan clan = clanService.findClanById(clanId);
+
+        clanService.removeUser(user.getClan(), user);
+        clanService.addUser(clan, user);
+        user.setClan(clan);
+
+        userDAO.save(user);
+        return user;
+    }
+
+    public User removeUserFromClan(long userId, long clanId) throws UserNotFoundException, ClanNotFoundException {
+        User user = findUserById(userId);
+        Clan clan = clanService.findClanById(clanId);
+
+        clanService.removeUser(clan, user);
+        clanService.createClan(user);
+        user.setClan(clan);
+
+        userDAO.save(user);
+        return user;
+    }
 
 }

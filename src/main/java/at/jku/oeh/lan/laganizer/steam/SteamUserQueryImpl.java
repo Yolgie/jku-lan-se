@@ -10,7 +10,6 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Assert;
 import org.springframework.stereotype.Component;
 
 import com.github.koraktor.steamcondenser.exceptions.WebApiException;
@@ -45,7 +44,6 @@ public class SteamUserQueryImpl implements SteamUserQuery {
 			JSONObject result = new JSONObject(WebApi.getJSON("ISteamUser", "GetPlayerSummaries", 2, params));
 			log.trace("Steam API call result: "+result.toString(2));
 			JSONArray players = result.getJSONObject("response").getJSONArray("players");
-			Assert.assertEquals(ids.length, players.length());
 			for (int i=0; i<players.length();i++) {
 				out.add(new SteamUser(players.getJSONObject(i)));
 			}

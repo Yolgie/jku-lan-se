@@ -39,10 +39,11 @@ public class SteamGameQueryImpl implements SteamGameQuery {
 			JSONArray jsonGames = result.getJSONObject("applist").getJSONArray("apps");
 			
 			for (int i = 0; i < jsonGames.length(); i++) {
-				Game game = new Game();
+
 				JSONObject jsonGame = jsonGames.getJSONObject(i);
-				game.setSteamId(jsonGame.getLong("appid"));
-				game.setName(jsonGame.getString("name"));
+				Game game = new Game(jsonGame.getLong("appid"), jsonGame.getString("name"));
+				//game.setSteamId(jsonGame.getLong("appid"));
+				//game.setName(jsonGame.getString("name"));
 				games.add(game);
 			}
 		} catch(Exception e) {

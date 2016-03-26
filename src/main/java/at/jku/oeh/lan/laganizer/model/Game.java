@@ -48,15 +48,11 @@ public class Game {
 	}
 	
 	public Game(long steamId, String name) {
-		super();
 		this.steamId = steamId;
 		this.name = name;
 	}
 	public Game(long steamId) {
-		this();
-		Game game = query.getGame(steamId);
-		this.name = game.name;
-		this.steamId = game.steamId;
+		this.steamId = steamId;
 	}
 	@Override
 	public int hashCode() {

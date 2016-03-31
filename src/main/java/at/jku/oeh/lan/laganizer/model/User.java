@@ -1,24 +1,13 @@
 package at.jku.oeh.lan.laganizer.model;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
 public class User extends BaseEntity implements UserDetails, Serializable {
@@ -39,13 +28,6 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     private boolean steamVisible;
     @Column(length = 255, nullable = true)
     private String steamAvatarUrl;
-    
-    @OneToOne(optional=true, 
-    		orphanRemoval=true,
-    		cascade=CascadeType.ALL,
-    		fetch=FetchType.LAZY,
-    		mappedBy="user")
-    private UserState state;
 
     @Column(length = 80, nullable = true)
     private String googleId;
@@ -59,16 +41,6 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     public User() {
         this.uuid = UUID.randomUUID().toString();
     }
-
-    public UserState getState() {
-		return state;
-       }
-
-	public void setState(UserState state) {
-		if (state != null)
-			state.setUser(this);
-		this.state = state;
-	}
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

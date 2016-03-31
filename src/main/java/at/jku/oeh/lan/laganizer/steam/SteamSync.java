@@ -1,29 +1,26 @@
 package at.jku.oeh.lan.laganizer.steam;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-import javax.validation.constraints.NotNull;
-
 import at.jku.oeh.lan.laganizer.model.Game;
+import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.dao.GameDAO;
+import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
+import at.jku.oeh.lan.laganizer.repository.GameRepo;
+import com.github.koraktor.steamcondenser.steam.community.WebApi;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.github.koraktor.steamcondenser.steam.community.WebApi;
-
-import at.jku.oeh.lan.laganizer.model.User;
-import at.jku.oeh.lan.laganizer.model.dao.GameDAO;
-import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
+import javax.transaction.Transactional;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Service
 public class SteamSync implements InitializingBean {
@@ -46,6 +43,9 @@ public class SteamSync implements InitializingBean {
 	
 	@Autowired
 	private SteamUserConsumer consumer;
+
+    @Autowired
+    private GameRepo gameRepo;
 	
 	/**
 	 * Ugly, but @Transational isn't inherited by concrete classes. So we need a helper
@@ -89,8 +89,13 @@ public class SteamSync implements InitializingBean {
 //	@Async
 	@Scheduled(fixedRate=86400000)
 	public void syncGames() {
-		gameDao.save(gameQuery.getAllGames());
+		List<Game> allGames = gameQuery.getAllGames();
+		gameRepo.save(allGames);
 	}
+
+    private void save(Game g) {
+        gameRepo.save(g);
+    }
 
 	@Override
 	public void afterPropertiesSet() throws Exception {

@@ -1,19 +1,17 @@
 package at.jku.oeh.lan.model;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
-
+import at.jku.oeh.lan.AbstractTestCase;
+import at.jku.oeh.lan.laganizer.model.Game;
+import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import at.jku.oeh.lan.AbstractTestCase;
-import at.jku.oeh.lan.laganizer.model.Game;
-import at.jku.oeh.lan.laganizer.model.User;
-import at.jku.oeh.lan.laganizer.model.UserState;
-import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 public class UserTest extends AbstractTestCase {
 	private User test;
@@ -27,10 +25,6 @@ public class UserTest extends AbstractTestCase {
 		test = new User();
 		test.setEmail("test@example.org");
 		test.setName("Tester");
-		UserState state = new UserState();
-		state.setGame(game);
-		state.setGameServer("127.0.0.1");
-		test.setState(state);
 	}
 	
 	@Test
@@ -53,9 +47,5 @@ public class UserTest extends AbstractTestCase {
 		Assert.assertNotEquals(0L, test.getId());
 		final User actual = dao.findOne(test.getId());
 		Assert.assertEquals(test, actual);
-		final UserState state = test.getState();
-		Assert.assertNotNull(state);
-		Assert.assertEquals(state.getGame(), actual.getState().getGame());
-		Assert.assertEquals(state.getGameServer(), actual.getState().getGameServer());
 	}
 }

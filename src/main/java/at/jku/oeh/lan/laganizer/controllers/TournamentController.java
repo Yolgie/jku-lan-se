@@ -17,6 +17,7 @@ import java.io.Serializable;
 @RequestMapping("/tournaments/")
 @PermitAll
 public class TournamentController {
+
     @Autowired
     private TournamentService tournamentService;
 

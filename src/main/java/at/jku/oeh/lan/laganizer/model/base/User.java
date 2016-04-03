@@ -29,8 +29,13 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     private String email;
 
-    @Column(length = 80, nullable = true)
-    private String steamId;
+    @Column(nullable=true)
+    private Long steamId;
+
+    private boolean steamVisible;
+
+    @Column(length = 255, nullable = true)
+    private String steamAvatarUrl;
 
     @Column(length = 80, nullable = true)
     private String googleId;
@@ -38,7 +43,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @Column(length = 80, nullable = true)
     private String saml2Id;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     private Set<String> roles = new HashSet<>();
 
     public User() {
@@ -64,6 +69,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
         return authorities;
     }
+
 
     @Override
     public String getPassword() {
@@ -109,6 +115,17 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         return name;
     }
 
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
+    public Long getSteamId() {
+        return steamId;
+    }
+
+    public void setSteamId(Long steamId) {
+        this.steamId = steamId;
+
     public String getEmail() {
         return email;
     }
@@ -117,16 +134,16 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         return googleId;
     }
 
-    public String getSteamId() {
-        return steamId;
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 
     public String getSaml2Id() {
         return saml2Id;
     }
 
-    public Set<String> getRoles() {
-        return roles;
+    public void setSaml2Id(String saml2Id) {
+        this.saml2Id = saml2Id;
     }
 
     /// Setter ///
@@ -165,4 +182,49 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     public String toString() {
         return "User: " + getName() + " with E-Mail: " + getEmail() + " and Roles: " + roles.toString();
     }
+
+
+	public boolean isSteamVisible() {
+		return steamVisible;
+	}
+
+
+	public void setSteamVisible(boolean steamVisible) {
+		this.steamVisible = steamVisible;
+	}
+
+
+	public String getSteamAvatarUrl() {
+		return steamAvatarUrl;
+	}
+
+
+	public void setSteamAvatarUrl(String steamAvatarUrl) {
+		this.steamAvatarUrl = steamAvatarUrl;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (uuid == null) {
+			if (other.uuid != null)
+				return false;
+		} else if (!uuid.equals(other.uuid))
+			return false;
+		return true;
+	}
 }

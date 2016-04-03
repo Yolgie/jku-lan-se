@@ -26,10 +26,10 @@ spring:
 # schema will be automatically updated accordingly to java entities found in
 # the project
         hibernate:
-            ddl-auto:                   update
+            ddl-auto:                   create-drop
 # Naming strategy
             naming-strategy:            org.hibernate.cfg.ImprovedNamingStrategy
-            
+
     aop:
         proxy-target-class: true
 # ===============================

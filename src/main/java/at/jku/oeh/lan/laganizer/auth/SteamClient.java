@@ -50,7 +50,7 @@ public class SteamClient extends BaseOpenIdClient<SteamProfile> {
         if (credentials.getClientName().equals("SteamClient")) {
             SteamProfile steamProfile = new SteamProfile();
             String steamId = getSteamId(credentials);
-            steamProfile.setSteamId(steamId);
+            steamProfile.setSteamId(Long.parseLong(steamId));
             return steamProfile;
         } else return null;
     }

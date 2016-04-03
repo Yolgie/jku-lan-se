@@ -8,7 +8,11 @@ import at.jku.oeh.lan.laganizer.model.base.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
+
 import java.io.Serializable;
+
+import javax.annotation.security.PermitAll;
 
 @RestController
 @RequestMapping("/users/")

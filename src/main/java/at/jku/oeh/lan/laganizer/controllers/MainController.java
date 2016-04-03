@@ -29,6 +29,7 @@ public class MainController {
         final WebContext context = new J2EContext(request, response);
         map.put("profile", getStringProfile(context));
         map.put("user", getCurrentUserString(context));
+        map.put("firstName", getCurrentUserString(context));
         return "index";
     }
 

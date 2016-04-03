@@ -6,6 +6,9 @@ import at.jku.oeh.lan.laganizer.model.base.User;
 import at.jku.oeh.lan.laganizer.model.base.UserNotFoundException;
 import at.jku.oeh.lan.laganizer.model.base.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
@@ -69,6 +72,15 @@ public class UserController {
         return result;
     }
 
+    @ResponseStatus(value = HttpStatus.OK)
+    @RequestMapping(value = "update/{id}", method = RequestMethod.POST)
+    public void updateByJSON(@RequestBody UserDTO userJson) {
+        User user = userDao.findById(userJson.getId());
+        user.setName(userJson.getName());
+        user.setEmail(userJson.getEmail());
+        userDao.save(user);
+    }
+
     @RequestMapping(value = "new", method = RequestMethod.POST)
     public RESTDataWrapperDTO<User> create(@RequestParam String name) {
         RESTDataWrapperDTO<User> result = new RESTDataWrapperDTO<>();
@@ -98,8 +110,25 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
-    public RESTDataWrapperDTO list() {
-        return new RESTDataWrapperDTO<>((Serializable) userService.findAllUsers(), true);
+    @RequestMapping(value= "current", method = RequestMethod.GET)
+    public @ResponseBody UserDTO currentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth instanceof  ClientAuthenticationToken) {
+            ClientAuthenticationToken token = (ClientAuthenticationToken) auth;
+            User u = (User) token.getUserDetails();
+            return new UserDTO(u);
+        }
+        return null;
     }
+
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    public @ResponseBody List<UserDTO> list() {
+        Iterable<User> users = userDao.findAll();
+        List<UserDTO> userDtos = new ArrayList<>();
+        for(User u: users) {
+            userDtos.add(new UserDTO(u));
+        }
+        return userDtos;
+    }
+
 }

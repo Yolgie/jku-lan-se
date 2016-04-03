@@ -17,15 +17,15 @@ import java.time.Instant;
 public abstract class BaseEntity implements Serializable {
     @Id
     @GeneratedValue
-    protected long id;
+    private long id;
 
     @NotNull
     @CreatedDate
-    protected Instant createdDate;
+    private Instant createdDate;
 
     @NotNull
     @LastModifiedDate
-    protected Instant lastModifiedDate;
+    private Instant lastModifiedDate;
 
     public long getId() {
         return id;

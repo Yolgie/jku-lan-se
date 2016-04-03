@@ -78,7 +78,6 @@ public class SteamSync implements InitializingBean {
 	/**
 	 * Run every 10 minutes
 	 */
-//	@Async
 	@Scheduled(fixedRate=600000)
 	public void syncUserStates() {
 		Set<User> steamUsers = userService.findAllSteamUsers();
@@ -97,16 +96,11 @@ public class SteamSync implements InitializingBean {
 	/**
 	 * Run every 24 hours
 	 */
-//	@Async
 	@Scheduled(fixedRate=86400000)
 	public void syncGames() {
 		List<Game> allGames = gameQuery.getAllGames();
 		gameRepo.save(allGames);
 	}
-
-    private void save(Game g) {
-        gameRepo.save(g);
-    }
 
 	@Override
 	public void afterPropertiesSet() throws Exception {

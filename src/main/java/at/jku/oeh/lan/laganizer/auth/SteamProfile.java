@@ -5,14 +5,14 @@ import org.pac4j.core.profile.CommonProfile;
 
 public class SteamProfile extends CommonProfile {
 
-    String steamId;
+    long steamId;
 
 
-    public String getSteamId() {
+    public long getSteamId() {
         return steamId;
     }
 
-    public void setSteamId(String steamId) {
+    public void setSteamId(long steamId) {
         this.steamId = steamId;
     }
 }

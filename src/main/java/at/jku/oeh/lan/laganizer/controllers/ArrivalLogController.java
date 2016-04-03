@@ -1,19 +1,19 @@
 package at.jku.oeh.lan.laganizer.controllers;
 
-import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
-import at.jku.oeh.lan.laganizer.model.ArrivalAction;
-import at.jku.oeh.lan.laganizer.model.ArrivalLog;
-import at.jku.oeh.lan.laganizer.model.ArrivalLogDAO;
-import at.jku.oeh.lan.laganizer.model.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import at.jku.oeh.lan.laganizer.dto.RESTDataWrapperDTO;
+import at.jku.oeh.lan.laganizer.model.actionlog.ArrivalAction;
+import at.jku.oeh.lan.laganizer.model.actionlog.ArrivalLog;
+import at.jku.oeh.lan.laganizer.model.dao.ArrivalLogDAO;
+import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
+
 import javax.annotation.security.PermitAll;
 import java.io.Serializable;
-import java.util.Calendar;
 
 @RestController
 @RequestMapping("/arrivalLog/")
@@ -40,8 +40,7 @@ public class ArrivalLogController {
         //todo check if all tose are valid assignments & if users exits, ...
         arrivalLog.setUser(userDAO.findOne(userId));
         arrivalLog.setAction(ArrivalAction.values()[action]);
-        arrivalLog.setTimestamp(Calendar.getInstance());
-        arrivalLog.setReporter(userDAO.findOne(reporterId));
+        arrivalLog.setCreatedBy(userDAO.findOne(reporterId));
         arrivalLog.setNote(note);
         arrivalLogDAO.save(arrivalLog);
 

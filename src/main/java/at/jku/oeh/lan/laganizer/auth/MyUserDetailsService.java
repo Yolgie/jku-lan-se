@@ -35,7 +35,7 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
 
     @Override
     public UserDetails loadUserDetails(ClientAuthenticationToken token) throws UsernameNotFoundException {
-        log.info("Tryed to load user Details with token " + token);
+        log.info("Tried to load user Details with token " + token);
 
         switch (token.getClientName()) {
             case "googleClient":
@@ -64,7 +64,8 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
         try{
             return userService.findUserByGoogleID(profile.getId());
         }catch( UserNotFoundException e) {
-            User user = userService.createUser(profile.getUsername());
+
+            User user = userService.createUser((String) profile.getAttribute("name"));
             user.setGoogleId(profile.getId());
             user.setEmail(profile.getEmail());
             return user;

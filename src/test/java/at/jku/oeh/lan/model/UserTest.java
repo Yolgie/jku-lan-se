@@ -2,7 +2,7 @@ package at.jku.oeh.lan.model;
 
 import at.jku.oeh.lan.AbstractTestCase;
 import at.jku.oeh.lan.laganizer.model.Game;
-import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.base.User;
 import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Assert;

@@ -1,9 +1,11 @@
 package at.jku.oeh.lan.steam;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Set;
-
+import at.jku.oeh.lan.AbstractTestCase;
+import at.jku.oeh.lan.laganizer.model.Game;
+import at.jku.oeh.lan.laganizer.model.dao.GameDAO;
+import at.jku.oeh.lan.laganizer.steam.SteamGameQuery;
+import com.github.koraktor.steamcondenser.exceptions.WebApiException;
+import com.github.koraktor.steamcondenser.steam.community.WebApi;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,13 +13,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.github.koraktor.steamcondenser.exceptions.WebApiException;
-import com.github.koraktor.steamcondenser.steam.community.WebApi;
-
-import at.jku.oeh.lan.AbstractTestCase;
-import at.jku.oeh.lan.laganizer.model.Game;
-import at.jku.oeh.lan.laganizer.model.dao.GameDAO;
-import at.jku.oeh.lan.laganizer.steam.SteamGameQuery;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Set;
 
 public class SteamGameTest extends AbstractTestCase {
 	@Value("${steam.apiKey}")

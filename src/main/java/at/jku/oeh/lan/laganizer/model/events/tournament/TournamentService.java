@@ -14,7 +14,7 @@ import java.util.Set;
 @Service
 public class TournamentService extends EventService {
     @Autowired
-    private TournamentDAO tournamentDAO;
+    private at.jku.oeh.lan.laganizer.model.dao.TournamentDAO tournamentDAO;
     @Autowired
     private TimeService timeService;
     @Autowired

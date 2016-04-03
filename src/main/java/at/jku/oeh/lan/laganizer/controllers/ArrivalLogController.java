@@ -12,6 +12,9 @@ import at.jku.oeh.lan.laganizer.model.actionlog.ArrivalLog;
 import at.jku.oeh.lan.laganizer.model.dao.ArrivalLogDAO;
 import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
 
+import javax.annotation.security.PermitAll;
+import java.io.Serializable;
+
 @RestController
 @RequestMapping("/arrivalLog/")
 @PermitAll

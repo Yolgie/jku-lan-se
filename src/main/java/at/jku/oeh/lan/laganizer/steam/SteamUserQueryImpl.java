@@ -1,10 +1,8 @@
 package at.jku.oeh.lan.laganizer.steam;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.github.koraktor.steamcondenser.exceptions.WebApiException;
+import com.github.koraktor.steamcondenser.steam.community.WebApi;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
@@ -12,30 +10,30 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import com.github.koraktor.steamcondenser.exceptions.WebApiException;
-import com.github.koraktor.steamcondenser.steam.community.WebApi;
+import java.util.*;
 
 @Component
 public class SteamUserQueryImpl implements SteamUserQuery {
 	private static final Log log = LogFactory.getLog(SteamUserQueryImpl.class);
 	@Override
 	public SteamUser getUser(long id) {
-		List<SteamUser> out = getUsers(id);
-		return (out.size() > 0) ? out.get(0) : null;
+		Collection<SteamUser> out = getUsers(id);
+		return (out.size() > 0) ? out.iterator().next() : null;
 	}
 
 	@Override
-	public List<SteamUser> getUsers(List<Long> ids) {
-		long[] aids = new long[ids.size()];
-		for (int i = 0; i < aids.length; i++) {
-			aids[i] = ids.get(i);
-		}
-		return getUsers(aids);
-
+	public Collection<SteamUser> getUsers(Collection<Long> ids) {
+		return createUsers(ids);
 	}
 
 	@Override
-	public List<SteamUser> getUsers(long... ids) {
+	public Collection<SteamUser> getUsers(long... ids) {
+		List<Long> input = Arrays.asList(ArrayUtils.toObject(ids));
+		return createUsers(input);
+	}
+
+
+	private Collection<SteamUser> createUsers(Collection<Long> ids) {
 		Map<String,Object> params = new HashMap<>();
 		List<SteamUser> out = new ArrayList<>();
 		JSONArray steamIds = new JSONArray(ids);

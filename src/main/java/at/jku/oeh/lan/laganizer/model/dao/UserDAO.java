@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 
 @Component
 @Transactional
-public interface UserDAO extends CrudRepository<User, Long>,SteamUserDAO {
+public interface UserDAO extends CrudRepository<User, Long> {
     User findBySteamId(long steamId);
 
     User findByGoogleId(String googleId);

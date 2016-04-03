@@ -1,7 +1,8 @@
 package at.jku.oeh.lan.laganizer.auth;
 
 import at.jku.oeh.lan.laganizer.model.base.User;
-import at.jku.oeh.lan.laganizer.model.base.UserDAO;
+import at.jku.oeh.lan.laganizer.model.base.UserNotFoundException;
+import at.jku.oeh.lan.laganizer.model.base.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opensaml.core.xml.XMLObject;
@@ -11,29 +12,23 @@ import org.pac4j.oidc.profile.OidcProfile;
 import org.pac4j.saml.credentials.SAML2Credentials;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 @Component
 public class MyUserDetailsService implements AuthenticationUserDetailsService<ClientAuthenticationToken> {
 
     @Autowired
-    UserDAO userDAO;
+    private UserService userService;
 
-    @Value("${saml.adminRoleRegexp}")
-    @NotNull
-    private String adminRegexp;
-
+//    @Value("${saml.adminRoleRegexp}")
+//    @NotNull
+//    private String adminRegexp;
 
     private static final Log log = LogFactory.getLog(MyUserDetailsService.class);
 
@@ -56,53 +51,39 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
     }
 
     private UserDetails getSteamUserDetails(SteamProfile profile) {
-        User user = userDAO.findBySteamId(profile.steamId);
-
-        if (user == null) {
-            user = new User();
+        try {
+            return userService.findUserBySteamId(profile.steamId);
+        }catch(UserNotFoundException e) {
+            User user = userService.createUser(Long.toString(profile.steamId));
             user.setSteamId(profile.steamId);
-            user.setName(profile.steamId);
-            user.getRoles().add("USER");
-            userDAO.save(user);
+            return user;
         }
-        return user;
     }
 
     private UserDetails getGoogleUserDetails(OidcProfile profile) {
-        User user = userDAO.findByGoogleId(profile.getId());
-
-        if (user == null) {
-            user = new User();
+        try{
+            return userService.findUserByGoogleID(profile.getId());
+        }catch( UserNotFoundException e) {
+            User user = userService.createUser(profile.getUsername());
             user.setGoogleId(profile.getId());
             user.setEmail(profile.getEmail());
-            user.setName(profile.getUsername());
-            user.getRoles().add("USER");
-            userDAO.save(user);
+            return user;
         }
-        return user;
     }
 
     private UserDetails getSamlClientDetails(ClientAuthenticationToken token) {
         SAML2Credentials credentials = (SAML2Credentials) token.getCredentials();
         String userID = credentials.getNameId().getValue();
-        User user = userDAO.findBySaml2Id(userID);
-        if (user == null) {
-            user = createFromCredential(credentials);
+
+        try{
+            return userService.findUserBySaml2ID(userID);
+        }catch( UserNotFoundException e) {
+            User user = userService.createUser(getAttributeValue(getAttributeByFriendlyName(credentials, "cn")));
+            user.setSaml2Id(userID);
+            user.setEmail(getAttributeValue(getAttributeByFriendlyName(credentials, "mail")));
+            return user;
         }
-        return user;
     }
-
-    /*
-     * OpenSAML helper methods
-     */
-    private User createFromCredential(final SAML2Credentials credential) {
-        final User user = new User();
-        user.setName(getAttributeValue(getAttributeByFriendlyName(credential, "cn")));
-        user.setEmail(getAttributeValue(getAttributeByFriendlyName(credential, "mail")));
-        user.setRoles(mapRoles(credential));
-        return user;
-    }
-
 
     private Attribute getAttributeByFriendlyName(final SAML2Credentials credential, final String name) {
         for (Attribute attr : credential.getAttributes()) {
@@ -131,30 +112,32 @@ public class MyUserDetailsService implements AuthenticationUserDetailsService<Cl
         return null;
     }
 
-    private Set<String> mapRoles(final SAML2Credentials credential) {
-        final Set<String> roles = new HashSet<>();
 
-        assert adminRegexp != null;
-        Attribute entitlement = getAttributeByFriendlyName(credential, "eduPersonEntitlement");
-        roles.add("ROLE_USER");
-
-        if (entitlement != null) {
-            Pattern PATTERN_ADMIN = Pattern.compile(adminRegexp);
-            for (XMLObject obj : entitlement.getAttributeValues()) {
-                if (obj instanceof XSString) {
-                    final String role = ((XSString) obj).getValue();
-                    log.trace(String.format("Matching role %s", role));
-
-                    if (PATTERN_ADMIN.matcher(role).matches()) {
-                        log.trace("match");
-                        roles.add("ROLE_ADMIN");
-                    }
-                }
-            }
-        }
-
-        return roles;
-    }
+    //TODO: We could automatically assign roles based on SAML2 with this function. Not in use for first versions.
+//    private Set<String> mapRoles(final SAML2Credentials credential) {
+//        final Set<String> roles = new HashSet<>();
+//
+//        assert adminRegexp != null;
+//        Attribute entitlement = getAttributeByFriendlyName(credential, "eduPersonEntitlement");
+//        roles.add("ROLE_USER");
+//
+//        if (entitlement != null) {
+//            Pattern PATTERN_ADMIN = Pattern.compile(adminRegexp);
+//            for (XMLObject obj : entitlement.getAttributeValues()) {
+//                if (obj instanceof XSString) {
+//                    final String role = ((XSString) obj).getValue();
+//                    log.trace(String.format("Matching role %s", role));
+//
+//                    if (PATTERN_ADMIN.matcher(role).matches()) {
+//                        log.trace("match");
+//                        roles.add("ROLE_ADMIN");
+//                    }
+//                }
+//            }
+//        }
+//
+//        return roles;
+//    }
 
     /*
      * /OpenSAML helper methods

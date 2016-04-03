@@ -1,7 +1,7 @@
 package at.jku.oeh.lan.steam;
 
 import at.jku.oeh.lan.AbstractTestCase;
-import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.base.User;
 import at.jku.oeh.lan.laganizer.model.dao.GameDAO;
 import at.jku.oeh.lan.laganizer.model.dao.UserDAO;
 import at.jku.oeh.lan.laganizer.steam.SteamSync;

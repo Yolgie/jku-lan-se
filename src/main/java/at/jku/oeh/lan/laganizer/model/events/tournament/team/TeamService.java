@@ -3,6 +3,7 @@ package at.jku.oeh.lan.laganizer.model.events.tournament.team;
 import at.jku.oeh.lan.laganizer.model.base.User;
 import at.jku.oeh.lan.laganizer.model.base.UserNotFoundException;
 import at.jku.oeh.lan.laganizer.model.base.UserService;
+import at.jku.oeh.lan.laganizer.model.dao.TeamDAO;
 import at.jku.oeh.lan.laganizer.model.events.tournament.Tournament;
 import at.jku.oeh.lan.laganizer.model.events.tournament.TournamentNotFoundException;
 import at.jku.oeh.lan.laganizer.model.events.tournament.TournamentService;

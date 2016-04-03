@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Entity
 public class User extends BaseEntity implements UserDetails, Serializable {
+
     @Column(length = 80, nullable = false)
     private String uuid;
 
@@ -29,18 +30,18 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     private String email;
 
-    @Column(nullable=true)
+    @Column
     private Long steamId;
 
     private boolean steamVisible;
 
-    @Column(length = 255, nullable = true)
+    @Column
     private String steamAvatarUrl;
 
-    @Column(length = 80, nullable = true)
+    @Column(length = 80)
     private String googleId;
 
-    @Column(length = 80, nullable = true)
+    @Column(length = 80)
     private String saml2Id;
 
     @ElementCollection(fetch = FetchType.LAZY)
@@ -115,36 +116,37 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         return name;
     }
 
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
+    public String getEmail() {
+        return email;
     }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public Set<Team> getTeams() {
+        return teams;
+    }
+
 
     public Long getSteamId() {
         return steamId;
-    }
-
-    public void setSteamId(Long steamId) {
-        this.steamId = steamId;
-
-    public String getEmail() {
-        return email;
     }
 
     public String getGoogleId() {
         return googleId;
     }
 
-    public void setGoogleId(String googleId) {
-        this.googleId = googleId;
-    }
-
     public String getSaml2Id() {
         return saml2Id;
     }
 
-    public void setSaml2Id(String saml2Id) {
-        this.saml2Id = saml2Id;
+    public void setSteamId(Long steamId) {
+        this.steamId = steamId;
     }
+
+
+
 
     /// Setter ///
     public void setUuid(String uuid) {
@@ -163,11 +165,16 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         this.email = email;
     }
 
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
+
     public void setGoogleId(String googleId) {
         this.googleId = googleId;
     }
 
-    public void setSteamId(String steamId) {
+    public void setSteamId(long steamId) {
         this.steamId = steamId;
     }
 
@@ -175,33 +182,29 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         this.saml2Id = saml2Id;
     }
 
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
+    public boolean isSteamVisible() {
+        return steamVisible;
     }
+
+
+    public void setSteamVisible(boolean steamVisible) {
+        this.steamVisible = steamVisible;
+    }
+
+
+    public String getSteamAvatarUrl() {
+        return steamAvatarUrl;
+    }
+
+
+    public void setSteamAvatarUrl(String steamAvatarUrl) {
+        this.steamAvatarUrl = steamAvatarUrl;
+    }
+
 
     public String toString() {
         return "User: " + getName() + " with E-Mail: " + getEmail() + " and Roles: " + roles.toString();
     }
-
-
-	public boolean isSteamVisible() {
-		return steamVisible;
-	}
-
-
-	public void setSteamVisible(boolean steamVisible) {
-		this.steamVisible = steamVisible;
-	}
-
-
-	public String getSteamAvatarUrl() {
-		return steamAvatarUrl;
-	}
-
-
-	public void setSteamAvatarUrl(String steamAvatarUrl) {
-		this.steamAvatarUrl = steamAvatarUrl;
-	}
 
 	@Override
 	public int hashCode() {

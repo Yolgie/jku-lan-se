@@ -1,10 +1,10 @@
 package at.jku.oeh.lan.steam;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
+import at.jku.oeh.lan.AbstractTestCase;
+import at.jku.oeh.lan.laganizer.steam.SteamUser;
+import at.jku.oeh.lan.laganizer.steam.SteamUserQuery;
+import com.github.koraktor.steamcondenser.exceptions.WebApiException;
+import com.github.koraktor.steamcondenser.steam.community.WebApi;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,12 +12,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import at.jku.oeh.lan.AbstractTestCase;
-import at.jku.oeh.lan.laganizer.steam.SteamUser;
-import at.jku.oeh.lan.laganizer.steam.SteamUserQuery;
-
-import com.github.koraktor.steamcondenser.exceptions.WebApiException;
-import com.github.koraktor.steamcondenser.steam.community.WebApi;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
 //http://www.jayway.com/2010/12/28/using-powermock-with-spring-integration-testing/
 public class SteamUserTest extends AbstractTestCase {
 	private SteamUser robin = new SteamUser(
@@ -81,7 +79,7 @@ public class SteamUserTest extends AbstractTestCase {
 			robin.getId(), 		
 			76561198048409050L // fuero
 		};
-		List<SteamUser> users = query.getUsers(ids);
+		Collection<SteamUser> users = query.getUsers(ids);
 		Assert.assertNotNull(users);
 		Assert.assertEquals(2, users.size());
 		for (long id : ids) {

@@ -1,9 +1,9 @@
 package at.jku.oeh.lan.laganizer.steam;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface SteamUserQuery {
 	SteamUser getUser(long id);
-	List<SteamUser> getUsers(long... ids);
-	List<SteamUser> getUsers(List<Long> ids);
+	Collection<SteamUser> getUsers(long... ids);
+	Collection<SteamUser> getUsers(Collection<Long> ids);
 }

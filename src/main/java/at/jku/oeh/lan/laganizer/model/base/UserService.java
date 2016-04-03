@@ -90,6 +90,14 @@ public class UserService {
         return users;
     }
 
+    public void persistUser(User u) {
+        userDAO.save(u);
+    }
+
+    public void persistUsers(Iterable<User> users) {
+        userDAO.save(users);
+    }
+
     public Set<User> findAllUsers() {
         Iterable<User> users = userDAO.findAll();
         Set<User> userSet = new HashSet<>();

@@ -1,6 +1,6 @@
 package at.jku.oeh.lan.laganizer.dto;
 
-import at.jku.oeh.lan.laganizer.model.User;
+import at.jku.oeh.lan.laganizer.model.base.User;
 
 /**
  * Used to transfer information, needed in FrontEnd.
